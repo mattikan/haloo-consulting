@@ -21,9 +21,15 @@ buildscript {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.5"
+    compile group: 'com.j256.ormlite', name: 'ormlite-core', version: '4.23'
+    compile "com.sparkjava:spark-core:2.5.5"
+
     testCompile 'junit:junit:4.12'
 }
 
 run {
     standardInput = System.in
+}
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
 }
