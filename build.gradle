@@ -10,19 +10,21 @@ apply plugin: "jacoco"
 mainClassName = "fi.halooconsulting.ohturef.EntryKt"
 
 buildscript {
+    ext.kotlin_version = "1.1.1"
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.5"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.5"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile group: 'com.j256.ormlite', name: 'ormlite-core', version: '4.23'
     compile "com.sparkjava:spark-core:2.5.5"
+    compile "com.sparkjava:spark-template-handlebars:2.5.5"
 
     testCompile 'junit:junit:4.12'
 }
