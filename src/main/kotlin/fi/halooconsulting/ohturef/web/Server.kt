@@ -1,10 +1,12 @@
 package fi.halooconsulting.ohturef.web
 
+import fi.halooconsulting.ohturef.model.RefType
 import fi.halooconsulting.ohturef.model.Reference
+import fi.halooconsulting.ohturef.model.ReferenceEntity
 import io.requery.kotlin.eq
 import io.requery.sql.KotlinEntityDataStore
-import spark.Spark.*
 import spark.ModelAndView
+import spark.Spark.*
 import spark.template.handlebars.HandlebarsTemplateEngine
 
 class Server(val data: KotlinEntityDataStore<Any>){
@@ -27,8 +29,34 @@ class Server(val data: KotlinEntityDataStore<Any>){
         }, templateEngine)
 
         get("/new", { req, res ->
-            val vars = "asdf"
+            val vars = null
             ModelAndView(vars, "new.hbs")
+        }, templateEngine)
+
+        post("/new", { req, res ->
+            var id = req.queryParams("id")
+            var types = req.queryParams("type")
+            var type: RefType = RefType.BOOK
+            if (types == "ARTICLE") {
+                type = RefType.ARTICLE
+            } else if (types == "BOOK") {
+                type = RefType.BOOK
+            } else if (types == "INPROCEEDINGS") {
+                type = RefType.INPROCEEDINGS
+            }
+            var author = req.queryParams("author")
+            var title = req.queryParams("title")
+            var year = req.queryParams("year")
+            var ref: Reference = ReferenceEntity()
+            ref.id = id
+            ref.type = type
+            ref.author = author
+            ref.title = title
+            ref.year = year.toInt()
+            data.insert(ref)
+            res.redirect("/")
+            val vars = null
+            ModelAndView(vars, "index.hbs")
         }, templateEngine)
 
         get("/:id", { req, res ->
