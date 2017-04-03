@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar build/libs/ohturefs.jar
+web: java $PORT $JAVA_OPTS -jar build/libs/ohturefs.jar
