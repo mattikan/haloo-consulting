@@ -69,5 +69,13 @@ sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class' : 'fi.halooconsulting.ohturef.EntryKt'
+        )
+    }
+}
+
 task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
