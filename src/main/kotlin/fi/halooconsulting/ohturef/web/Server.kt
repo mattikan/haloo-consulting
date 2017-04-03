@@ -26,6 +26,11 @@ class Server(val data: KotlinEntityDataStore<Any>){
             ModelAndView(vars, "index.hbs")
         }, templateEngine)
 
+        get("/new", { req, res ->
+            val vars = "asdf"
+            ModelAndView(vars, "new.hbs")
+        }, templateEngine)
+
         get("/:id", { req, res ->
             val refs = data {
                 select(Reference::class) where (Reference::id eq req.params("id"))
