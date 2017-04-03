@@ -75,6 +75,7 @@ jar {
                 'Main-Class' : 'fi.halooconsulting.ohturef.EntryKt'
         )
     }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 task stage(dependsOn: ['build', 'clean'])
