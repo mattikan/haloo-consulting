@@ -6,7 +6,8 @@ repositories {
 
 apply plugin: 'kotlin'
 apply plugin: 'application'
-apply plugin: "jacoco"
+apply plugin: 'jacoco'
+apply plugin: 'idea'
 
 mainClassName = "fi.halooconsulting.ohturef.EntryKt"
 
@@ -28,6 +29,14 @@ buildscript {
 
 kapt {
     generateStubs = true
+}
+
+sourceSets.main.java.srcDir file("$buildDir/generated/source/kapt/")
+
+idea {
+    module {
+        generatedSourceDirs += file("$buildDir/generated/source/kapt/")
+    }
 }
 
 dependencies {
