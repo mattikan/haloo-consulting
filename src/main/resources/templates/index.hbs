@@ -5,7 +5,10 @@
     </head>
     <body>
         <div class="content">
-            <h1>Hello, {{name}}!</h1>
+            <h1>Hello, database!</h1>
+            {{#each lines}}
+            <li> {{ this }} </li>
+            {{/each}}
         </div>
     </body>
 <html>

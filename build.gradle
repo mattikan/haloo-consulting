@@ -39,8 +39,9 @@ dependencies {
     testCompile 'info.cukes:cucumber-java:' + cucumberVersion
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
     testCompile 'junit:junit:4.12'
-
-    compile 'io.requery:requery:1.2.1'
+    
+    compile 'org.xerial:sqlite-jdbc:3.15.1'
+    compile 'io.requery:requery:1.1.2'
     compile 'io.requery:requery-kotlin:1.2.1'
     kapt 'io.requery:requery-processor:1.2.1'
 }
