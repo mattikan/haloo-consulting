@@ -37,11 +37,11 @@ class Server(val data: KotlinEntityDataStore<Any>){
             var id = req.queryParams("id")
             var types = req.queryParams("type")
             var type: RefType = RefType.BOOK
-            if (types == "ARTICLE") {
+            if (types.trim().toLowerCase() == "article") {
                 type = RefType.ARTICLE
-            } else if (types == "BOOK") {
+            } else if (types.trim().toLowerCase() == "book") {
                 type = RefType.BOOK
-            } else if (types == "INPROCEEDINGS") {
+            } else if (types.trim().toLowerCase() == "inproceedings") {
                 type = RefType.INPROCEEDINGS
             }
             var author = req.queryParams("author")
