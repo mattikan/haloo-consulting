@@ -65,3 +65,6 @@ fabric.properties
 
 # Databases
 *.db
+
+# .idea pois, huono .idea
+.idea/

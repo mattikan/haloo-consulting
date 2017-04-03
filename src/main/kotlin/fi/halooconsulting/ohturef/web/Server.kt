@@ -21,7 +21,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
             val refs = data {
                 select(Reference::class) limit 10
             }.get()
-            val lines: List<String> = refs.map{ it: Reference -> "[${it.id}] ${it.author}: ${it.title}" }
+            val lines: List<String> = refs.map{ it: Reference -> "[${it.id}] ${it.author}: ${it.title}, ${it.year}" }
             val vars = hashMapOf("lines" to lines)
             ModelAndView(vars, "index.hbs")
         }, templateEngine)
