@@ -68,3 +68,6 @@ test {
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
