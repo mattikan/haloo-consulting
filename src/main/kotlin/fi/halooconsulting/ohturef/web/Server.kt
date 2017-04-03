@@ -17,7 +17,11 @@ class Server(val data: KotlinEntityDataStore<Any>){
     fun start() {
         val templateEngine = HandlebarsTemplateEngine()
 
-        port(8000)
+        if (System.getenv("PORT") != null) {
+            port(System.getenv("PORT").toInt())
+        } else {
+            port(8000)
+        }
 
         get("/", { req, res ->
             val refs = data {

@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/ohturefs.jar
+web: java $JAVA_OPTS -jar build/libs/ohturefs.jar
