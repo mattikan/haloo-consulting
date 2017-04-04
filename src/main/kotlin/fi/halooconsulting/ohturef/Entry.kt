@@ -20,7 +20,7 @@ import javax.sql.DataSource
 fun main(args: Array<String>) {
 
     val source: DataSource
-    val dburl = System.getenv("DATABASE_URL")
+    val dburl = System.getenv("JDBC_DATABASE_URL")
     if (dburl == null) {
         println("No database URL found - using sqlite @ jdbc:sqlite:database.db")
         source = SQLiteDataSource()
