@@ -50,6 +50,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     
     compile 'org.xerial:sqlite-jdbc:3.15.1'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.0.0'
     compile 'io.requery:requery:1.1.2'
     compile 'io.requery:requery-kotlin:1.2.1'
     kapt 'io.requery:requery-processor:1.2.1'

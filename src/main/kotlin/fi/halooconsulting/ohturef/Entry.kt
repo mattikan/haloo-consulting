@@ -11,14 +11,23 @@ import io.requery.sql.KotlinEntityDataStore
 import io.requery.sql.SchemaModifier
 import io.requery.sql.TableCreationMode
 import org.sqlite.SQLiteDataSource
+import org.postgresql.ds.PGSimpleDataSource
 import java.util.*
+import javax.sql.DataSource
 
 // Models ja ReferenceEntity saattavat näyttää siltä että eivät ole olemassa, mutta älkööt huolestuko, kokeilkaa
 // gradle buildia
 fun main(args: Array<String>) {
 
-    val source = SQLiteDataSource()
-    source.url = "jdbc:sqlite:database.db"
+    val source: DataSource;
+    if (System.getenv("DATABASE_URL") == null) {
+        println("No database URL found - using sqlite @ jdbc:sqlite:database.db")
+        source = SQLiteDataSource()
+        source.url = "jdbc:sqlite:database.db"
+    } else {
+        source = PGSimpleDataSource()
+        source.url = System.getenv("DATABASE_URL")
+    }
     val model = Models.DEFAULT
     SchemaModifier(source, model).createTables(TableCreationMode.DROP_CREATE) //TODO: Poista tää ja populate
     val conf = KotlinConfiguration(model = model, dataSource = source)
