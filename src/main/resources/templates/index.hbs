@@ -6,7 +6,7 @@
     <body>
         <div class="content">
             <h1>Hello, database!</h1>
-            <input type="button" onclick="location.href='http://localhost:8000/new';" value="Add new reference" /><br>
+            <input type="button" onclick="location.href='/new';" value="Add new reference" /><br>
             <br>
             {{#each lines}}
                 <li> {{ this.author }} <a href="/{{this.id}}">{{ this.title }}</a> {{ this.year }} {{ this.publisher }} {{ this.address }} {{ this.pages }} </li>
