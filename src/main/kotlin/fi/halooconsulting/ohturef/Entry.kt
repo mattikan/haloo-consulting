@@ -19,14 +19,16 @@ import javax.sql.DataSource
 // gradle buildia
 fun main(args: Array<String>) {
 
-    val source: DataSource;
-    if (System.getenv("DATABASE_URL") == null) {
+    val source: DataSource
+    val dburl = System.getenv("DATABASE_URL")
+    if (dburl == null) {
         println("No database URL found - using sqlite @ jdbc:sqlite:database.db")
         source = SQLiteDataSource()
         source.url = "jdbc:sqlite:database.db"
     } else {
+        println("Using PostgreSQL @ $dburl")
         source = PGSimpleDataSource()
-        source.url = System.getenv("DATABASE_URL")
+        source.url = dburl
     }
     val model = Models.DEFAULT
     SchemaModifier(source, model).createTables(TableCreationMode.DROP_CREATE) //TODO: Poista tää ja populate
