@@ -4,4 +4,6 @@
 
 [Trello](https://trello.com/b/UBrankbK/haloo-consulting-ohtu-kanban)
 
+[Development version in Heroku](https://haloo-consulting.herokuapp.com/)
+
 TODO
