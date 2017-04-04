@@ -17,6 +17,7 @@ interface Reference : Persistable {
     var author: String // TODO: Halutaanko näitä tallettaa erillisiin tauluihin ja tallettaa vain referenssejä?
     var title: String
     var year: Int
+    var publisher: String
 
     // TODO: Loput kentät
 

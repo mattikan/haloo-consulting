@@ -28,7 +28,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
                 select(Reference::class) limit 10
             }.get()
             val lines: List<String> = refs.map{ it: Reference -> "[${it.id}] ${it.author}: ${it.title}, ${it.year}" }
-            val vars = hashMapOf("lines" to lines)
+            val vars = hashMapOf("lines" to refs)
             ModelAndView(vars, "index.hbs")
         }, templateEngine)
 
@@ -51,12 +51,14 @@ class Server(val data: KotlinEntityDataStore<Any>){
             var author = req.queryParams("author")
             var title = req.queryParams("title")
             var year = req.queryParams("year")
+            var publisher = req.queryParams("publisher")
             var ref: Reference = ReferenceEntity()
             ref.id = id
             ref.type = type
             ref.author = author
             ref.title = title
             ref.year = year.toInt()
+            ref.publisher = publisher
             data.insert(ref)
             res.redirect("/")
             val vars = null
@@ -64,12 +66,11 @@ class Server(val data: KotlinEntityDataStore<Any>){
         }, templateEngine)
 
         get("/:id", { req, res ->
-            val refs = data {
+            val ref = data {
                 select(Reference::class) where (Reference::id eq req.params("id"))
-            }.get()
-            val lines: List<String> = refs.map{ it: Reference -> "[${it.id}] ${it.author}: ${it.title}" }
-            val vars = hashMapOf("lines" to lines)
-            ModelAndView(vars, "index.hbs")
+            }.get().first()
+            val vars = hashMapOf("reference" to ref)
+            ModelAndView(vars, "reference.hbs")
         }, templateEngine)
 
         println("Started Ohturef server in port ${port()}")
