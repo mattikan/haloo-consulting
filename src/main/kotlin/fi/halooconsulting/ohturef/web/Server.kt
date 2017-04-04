@@ -52,6 +52,8 @@ class Server(val data: KotlinEntityDataStore<Any>){
             var title = req.queryParams("title")
             var year = req.queryParams("year")
             var publisher = req.queryParams("publisher")
+            var address = req.queryParams("address")
+            var pages = req.queryParams("pages")
             var ref: Reference = ReferenceEntity()
             ref.id = id
             ref.type = type
@@ -59,6 +61,8 @@ class Server(val data: KotlinEntityDataStore<Any>){
             ref.title = title
             ref.year = year.toInt()
             ref.publisher = publisher
+            ref.address = address
+            ref.pages = pages
             data.insert(ref)
             res.redirect("/")
             val vars = null
