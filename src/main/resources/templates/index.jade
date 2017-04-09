@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    h1 Haloo Consulting - Ohturef
+
+    h2 Book references
+    section#book-references
+        table
+            tr
+                th Id
+                th Author
+                th Title
+                th Year
+                th Publisher
+                th Address
+                th Pages
+                th
+            each line in lines
+                tr
+                    td= line.id
+                    td= line.author
+                    td: a(href="/#{line.id}") #{line.title}
+                    td= line.year
+                    td= line.publisher
+                    td= line.address
+                    td= line.pages
+                    td: a(href="#") ×
+        a.btn.add-btn(href="/new") Add new
+
+    h2 Export BibTeX
+    section#bibtex-export
+        span TBD
+
+    h2 Import from ACM
+    section#acm-import
+        input.acm-url(type="text" placeholder="https://dl.acm.org/citation..." size="60")
+        a.btn.inline-btn(href="#") Import

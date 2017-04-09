@@ -41,9 +41,9 @@ idea {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile group: 'com.j256.ormlite', name: 'ormlite-core', version: '4.23'
     compile "com.sparkjava:spark-core:2.5.5"
-    compile "com.sparkjava:spark-template-handlebars:2.5.5"
+    compile "com.sparkjava:spark-template-jade:2.5.5"
+    compile "org.slf4j:slf4j-simple:1.7.21"
 
     testCompile 'info.cukes:cucumber-java:' + cucumberVersion
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion

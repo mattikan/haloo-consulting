@@ -68,3 +68,9 @@ fabric.properties
 
 # .idea pois, huono .idea
 .idea/
+
+/classes/
+/bin/
+.project
+.classpath
+.settings

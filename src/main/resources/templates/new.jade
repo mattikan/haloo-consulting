@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    h1 New book reference
+    a(href="/") ◀ Return to listing
+    form(action="/new" method="post")
+        .field
+            label(for="id") Id
+            input#id(name="id" type="text" size="10" required)
+            a(href="#").btn.inline-btn Generate
+        .field
+            label(for="author" required) Author
+            input#author(name="author" type="text" size="50")
+        .field
+            label(for="title" required) Title
+            input#title(name="title" type="text" size="80")
+        .field
+            label(for="year" required) Year
+            input#year(name="year" type="number" min="1000" max="2017" value="2000")
+        .field
+            label.optional(for="publisher") Publisher
+            input#publisher(name="publisher" type="text" size="50" placeholder="Optional")
+        .field
+            label.optional(for="address") Address
+            input#address(name="address" type="text" size="50" placeholder="Optional")
+        .field
+            label.optional(for="pages") Pages
+            input#pages(name="address" type="text" size="30" placeholder="Optional")
+
+        input.btn.submit-btn.btn-lg(type="submit" value="Create")

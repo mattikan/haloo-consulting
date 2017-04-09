@@ -7,7 +7,7 @@ import io.requery.kotlin.eq
 import io.requery.sql.KotlinEntityDataStore
 import spark.ModelAndView
 import spark.Spark.*
-import spark.template.handlebars.HandlebarsTemplateEngine
+import spark.template.jade.JadeTemplateEngine
 
 class Server(val data: KotlinEntityDataStore<Any>){
     init {
@@ -15,7 +15,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
     }
 
     fun start() {
-        val templateEngine = HandlebarsTemplateEngine()
+        val templateEngine = JadeTemplateEngine()
 
         if (System.getenv("PORT") != null) {
             port(System.getenv("PORT").toInt())
@@ -23,23 +23,24 @@ class Server(val data: KotlinEntityDataStore<Any>){
             port(8000)
         }
 
+        externalStaticFileLocation("${System.getProperty("user.dir")}/public")
+
         get("/", { req, res ->
             val refs = data {
                 select(Reference::class) limit 10
             }.get()
-            val lines: List<String> = refs.map{ it: Reference -> "[${it.id}] ${it.author}: ${it.title}, ${it.year}" }
             val vars = hashMapOf("lines" to refs)
-            ModelAndView(vars, "index.hbs")
+            ModelAndView(vars, "index.jade")
         }, templateEngine)
 
         get("/new", { req, res ->
             val vars = null
-            ModelAndView(vars, "new.hbs")
+            ModelAndView(emptyMap<String, Any>(), "new.jade")
         }, templateEngine)
 
         post("/new", { req, res ->
             var id = req.queryParams("id")
-            var types = req.queryParams("type")
+            var types = req.queryParams("type").orEmpty()
             var type: RefType = RefType.BOOK
             if (types.trim().toLowerCase() == "article") {
                 type = RefType.ARTICLE
@@ -51,9 +52,9 @@ class Server(val data: KotlinEntityDataStore<Any>){
             var author = req.queryParams("author")
             var title = req.queryParams("title")
             var year = req.queryParams("year")
-            var publisher = req.queryParams("publisher")
-            var address = req.queryParams("address")
-            var pages = req.queryParams("pages")
+            var publisher = req.queryParams("publisher").orEmpty()
+            var address = req.queryParams("address").orEmpty()
+            var pages = req.queryParams("pages").orEmpty()
             var ref: Reference = ReferenceEntity()
             ref.id = id
             ref.type = type
@@ -66,7 +67,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
             data.insert(ref)
             res.redirect("/")
             val vars = null
-            ModelAndView(vars, "index.hbs")
+            ModelAndView(vars, "index.jade")
         }, templateEngine)
 
         get("/:id", { req, res ->
@@ -74,7 +75,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
                 select(Reference::class) where (Reference::id eq req.params("id"))
             }.get().first()
             val vars = hashMapOf("reference" to ref)
-            ModelAndView(vars, "reference.hbs")
+            ModelAndView(vars, "reference.jade")
         }, templateEngine)
 
         println("Started Ohturef server in port ${port()}")
