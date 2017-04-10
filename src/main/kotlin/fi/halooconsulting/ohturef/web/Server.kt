@@ -75,8 +75,8 @@ class Server(val data: KotlinEntityDataStore<Any>){
             ref.address = address
             ref.pages = pages
             ref.journal = journal
-            ref.volume = volume.toInt()
-            ref.number = number.toInt()
+            ref.volume = volume.toIntOrNull()
+            ref.number = number.toIntOrNull()
             ref.booktitle = booktitle
             data.insert(ref)
             res.redirect("/")
