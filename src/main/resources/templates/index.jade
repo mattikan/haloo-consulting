@@ -7,80 +7,89 @@ block content
 
     h2 Book references
     section#book-references
-        table
-            tr
-                th Id
-                th Author
-                th Title
-                th Year
-                th Publisher
-                th Address
-                th Pages
-                th
-            each line in references["book"]
+        if empty(references["book"])
+            p No book references.
+        else
+            table
                 tr
-                    td= line.id
-                    td= line.author
-                    td: a(href="/#{line.id}") #{line.title}
-                    td= line.year
-                    td= line.publisher
-                    td= line.address
-                    td= line.pages
-                    td: a(href="#") ×
+                    th Id
+                    th Author
+                    th Title
+                    th Year
+                    th Publisher
+                    th Address
+                    th Pages
+                    th
+                each line in references["book"]
+                    tr
+                        td= line.id
+                        td= line.author
+                        td: a(href="/#{line.id}") #{line.title}
+                        td= line.year
+                        td= line.publisher
+                        td= line.address
+                        td= line.pages
+                        td: a(href="#") ×
 
     h2 Article references
     section#article-references
-        table
-            tr
-                th Id
-                th Author
-                th Title
-                th Journal
-                th Volume
-                th Number
-                th Year
-                th Pages
-                th Publisher
-                th Address
-                th
-            each line in references["article"]
+        if empty(references["article"])
+            p No article references.
+        else
+            table
                 tr
-                    td= line.id
-                    td= line.author
-                    td: a(href="/#{line.id}") #{line.title}
-                    td= line.journal
-                    td= line.volume
-                    td= line.number
-                    td= line.year
-                    td= line.pages
-                    td= line.publisher
-                    td= line.address
-                    td: a(href="#") ×
+                    th Id
+                    th Author
+                    th Title
+                    th Journal
+                    th Volume
+                    th Number
+                    th Year
+                    th Pages
+                    th Publisher
+                    th Address
+                    th
+                each line in references["article"]
+                    tr
+                        td= line.id
+                        td= line.author
+                        td: a(href="/#{line.id}") #{line.title}
+                        td= line.journal
+                        td= line.volume
+                        td= line.number
+                        td= line.year
+                        td= line.pages
+                        td= line.publisher
+                        td= line.address
+                        td: a(href="#") ×
 
     h2 Inproceedings references
     section#inproceedings-references
-        table
-            tr
-                th Id
-                th Author
-                th Title
-                th Booktitle
-                th Year
-                th Pages
-                th Publisher
-                th Address
-                th
-            each line in references["inproceedings"]
+        if empty(references["inproceedings"])
+            p No inproceedings references.
+        else
+            table
                 tr
-                    td= line.id
-                    td= line.author
-                    td: a(href="/#{line.id}") #{line.title}
-                    td= line.booktitle
-                    td= line.year
-                    td= line.pages
-                    td= line.publisher
-                    td= line.address
-                    td: a(href="#") ×
+                    th Id
+                    th Author
+                    th Title
+                    th Booktitle
+                    th Year
+                    th Pages
+                    th Publisher
+                    th Address
+                    th
+                each line in references["inproceedings"]
+                    tr
+                        td= line.id
+                        td= line.author
+                        td: a(href="/#{line.id}") #{line.title}
+                        td= line.booktitle
+                        td= line.year
+                        td= line.pages
+                        td= line.publisher
+                        td= line.address
+                        td: a(href="#") ×
 
     h2 Export BibTeX
     section#bibtex-export
