@@ -4,3 +4,14 @@ block content
     h1= reference.title
     a(href="/") ◀ Return to listing
     p= reference
+
+    button.btn#export Export BibTex
+
+    textarea.hidden.bibtex-container#bibtex(rows="8", cols="60", readonly)
+
+    script.
+        $(document).ready(() => {
+            $("#export").click(() => {
+                $("#bibtex").load(location.pathname + "/bibtex", () => $("#bibtex").removeClass("hidden"))
+            });
+        });

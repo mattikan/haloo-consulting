@@ -81,10 +81,24 @@ label.optional {
     margin-left: 0.5em;
 }
 
-input[type="text"], input[type="number"] {
+input[type="text"], input[type="number"], textarea {
     border: none;
     box-shadow: #dadada -1px -1px 4px, #dadada 1px 1px 4px;
-    line-height: 2em;
-    padding: 0.5em;
 }
 
+input[type="text"], input[type="number"] {
+    line-height: 2em;
+}
+
+textarea {
+    padding: 1em;
+}
+
+.bibtex-container {
+    display: block;
+    margin-top: 1em;
+}
+
+.hidden {
+    display: none;
+}

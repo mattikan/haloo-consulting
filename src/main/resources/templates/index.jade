@@ -93,9 +93,18 @@ block content
 
     h2 Export BibTeX
     section#bibtex-export
-        span TBD
+        button.btn.inline-btn#export Export BibTex
+        a.btn(href="/bibtex" download="references.bibtex") Download as .bib
+        textarea.hidden.bibtex-container#bibtex(rows="8", cols="60", readonly)
 
     h2 Import from ACM
     section#acm-import
         input.acm-url(type="text" placeholder="https://dl.acm.org/citation..." size="60")
         a.btn.inline-btn(href="#") Import
+
+    script.
+        $(document).ready(() => {
+            $("#export").click(() => {
+                $("#bibtex").load("/bibtex", () => $("#bibtex").removeClass("hidden"))
+            });
+        });
