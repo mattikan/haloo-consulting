@@ -26,5 +26,17 @@ block content
         .field
             label.optional(for="pages") Pages
             input#pages(name="address" type="text" size="30" placeholder="Optional")
+        .field
+            label.optional(for="journal") Journal
+            input#journal(name="journal" type="text" size="50" placeholder="Optional")
+        .field
+            label.optional(for="volume") Volume
+            input#volume(name="volume" type="number" min="1")
+        .field
+            label.optional(for="number") Number
+            input#number(name="number" type="number" min="1")
+        .field
+            label.optional(for="booktitle") Booktitle
+            input#booktitle(name="booktitle" type="text" size="80" placeholder="Optional")
 
         input.btn.submit-btn.btn-lg(type="submit" value="Create")

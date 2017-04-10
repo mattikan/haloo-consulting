@@ -20,6 +20,10 @@ interface Reference : Persistable {
     var publisher: String
     var address: String
     var pages: String
+    var journal: String
+    var volume: Int
+    var number: Int
+    var booktitle: String
 
     // TODO: Loput kentät
 

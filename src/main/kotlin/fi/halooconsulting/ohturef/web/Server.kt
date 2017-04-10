@@ -55,6 +55,10 @@ class Server(val data: KotlinEntityDataStore<Any>){
             var publisher = req.queryParams("publisher").orEmpty()
             var address = req.queryParams("address").orEmpty()
             var pages = req.queryParams("pages").orEmpty()
+            var journal = req.queryParams("journal").orEmpty()
+            var volume = req.queryParams("volume")
+            var number = req.queryParams("number")
+            var booktitle = req.queryParams("booktitle").orEmpty()
             var ref: Reference = ReferenceEntity()
             ref.id = id
             ref.type = type
@@ -64,6 +68,10 @@ class Server(val data: KotlinEntityDataStore<Any>){
             ref.publisher = publisher
             ref.address = address
             ref.pages = pages
+            ref.journal = journal
+            ref.volume = volume.toInt()
+            ref.number = number.toInt()
+            ref.booktitle = booktitle
             data.insert(ref)
             res.redirect("/")
             val vars = null
