@@ -19,7 +19,7 @@ object BibTexConverter {
             .map { pair -> "${pair.first} = {${pair.second}}" }
             .joinToString(",\n")
 
-        sb.appendln(optionalProps)
+        sb.append(optionalProps)
         sb.append("}")
 
         return escapeUmlauts(sb.toString())

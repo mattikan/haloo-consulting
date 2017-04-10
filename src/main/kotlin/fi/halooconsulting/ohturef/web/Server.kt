@@ -1,5 +1,6 @@
 package fi.halooconsulting.ohturef.web
 
+import fi.halooconsulting.ohturef.conversion.BibTexConverter
 import fi.halooconsulting.ohturef.model.RefType
 import fi.halooconsulting.ohturef.model.Reference
 import fi.halooconsulting.ohturef.model.ReferenceEntity
@@ -83,6 +84,16 @@ class Server(val data: KotlinEntityDataStore<Any>){
             val vars = null
             ModelAndView(vars, "index.jade")
         }, templateEngine)
+
+        get("/:id/bibtex", { req, res ->
+            val ref = data {
+                select(Reference::class) where (Reference::id eq req.params("id"))
+            }.get().first()
+
+            val converted = BibTexConverter.toBibTex(ref)
+            res.header("Content-Type", "text/plain")
+            converted
+        })
 
         get("/:id", { req, res ->
             val ref = data {
