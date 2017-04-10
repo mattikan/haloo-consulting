@@ -85,6 +85,14 @@ class Server(val data: KotlinEntityDataStore<Any>){
             ModelAndView(vars, "index.jade")
         }, templateEngine)
 
+        get("/bibtex", { req, res ->
+            val refs = data { select(Reference::class) }.get().toList()
+    
+            var converted = refs.map { BibTexConverter.toBibTex(it) }.joinToString("\n\n")
+            res.header("Content-Type", "text/plain")
+            converted
+        })
+
         get("/:id/bibtex", { req, res ->
             val ref = data {
                 select(Reference::class) where (Reference::id eq req.params("id"))
