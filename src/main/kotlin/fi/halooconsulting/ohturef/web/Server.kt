@@ -8,6 +8,7 @@ import io.requery.sql.KotlinEntityDataStore
 import spark.ModelAndView
 import spark.Spark.*
 import spark.template.jade.JadeTemplateEngine
+import java.util.stream.Collectors
 
 class Server(val data: KotlinEntityDataStore<Any>){
     init {
@@ -27,9 +28,14 @@ class Server(val data: KotlinEntityDataStore<Any>){
 
         get("/", { req, res ->
             val refs = data {
-                select(Reference::class) limit 10
-            }.get()
-            val vars = hashMapOf("lines" to refs)
+                select(Reference::class)
+            }.get().groupBy { k -> k.type }.mapKeys { k -> k.key.name.toLowerCase() }.toMutableMap()
+
+            refs["book"] = refs.getOrDefault("book", emptyList())
+            refs["article"] = refs.getOrDefault("article", emptyList())
+            refs["inproceedings"] = refs.getOrDefault("inproceedings", emptyList())
+
+            val vars = hashMapOf("references" to refs)
             ModelAndView(vars, "index.jade")
         }, templateEngine)
 

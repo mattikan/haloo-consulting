@@ -15,7 +15,7 @@ block content
                 th Address
                 th Pages
                 th
-            each line in lines
+            each line in references["book"]
                 tr
                     td= line.id
                     td= line.author
@@ -42,7 +42,7 @@ block content
                 th Publisher
                 th Address
                 th
-            each line in lines
+            each line in references["article"]
                 tr
                     td= line.id
                     td= line.author
@@ -70,7 +70,7 @@ block content
                 th Publisher
                 th Address
                 th
-            each line in lines
+            each line in references["inproceedings"]
                 tr
                     td= line.id
                     td= line.author
