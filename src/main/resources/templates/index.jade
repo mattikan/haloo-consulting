@@ -27,6 +27,62 @@ block content
                     td: a(href="#") ×
         a.btn.add-btn(href="/new") Add new
 
+    h2 Article references
+    section#article-references
+        table
+            tr
+                th Id
+                th Author
+                th Title
+                th Journal
+                th Volume
+                th Number
+                th Year
+                th Pages
+                th Publisher
+                th Address
+                th
+            each line in lines
+                tr
+                    td= line.id
+                    td= line.author
+                    td: a(href="/#{line.id}") #{line.title}
+                    td= line.journal
+                    td= line.volume
+                    td= line.number
+                    td= line.year
+                    td= line.pages
+                    td= line.publisher
+                    td= line.address
+                    td: a(href="#") ×
+        a.btn.add-btn(href="/new") Add new
+
+    h2 Inproceeding references
+    section#inproceeding-references
+        table
+            tr
+                th Id
+                th Author
+                th Title
+                th Booktitle
+                th Year
+                th Pages
+                th Publisher
+                th Address
+                th
+            each line in lines
+                tr
+                    td= line.id
+                    td= line.author
+                    td: a(href="/#{line.id}") #{line.title}
+                    td= line.booktitle
+                    td= line.year
+                    td= line.pages
+                    td= line.publisher
+                    td= line.address
+                    td: a(href="#") ×
+        a.btn.add-btn(href="/new") Add new
+
     h2 Export BibTeX
     section#bibtex-export
         span TBD
