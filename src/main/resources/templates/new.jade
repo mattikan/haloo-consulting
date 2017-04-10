@@ -1,9 +1,15 @@
 extends layout
 
 block content
-    h1 New book reference
+    h1 New reference
     a(href="/") ◀ Return to listing
     form(action="/new" method="post")
+        .field
+            label(for="type") Type
+            select(name="type")
+                option(value="Book", selected="selected") Book
+                option(value="Inproceedings") Inproceedings
+                option(value="Article") Article
         .field
             label(for="id") Id
             input#id(name="id" type="text" size="10" required)

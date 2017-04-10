@@ -3,6 +3,8 @@ extends layout
 block content
     h1 Haloo Consulting - Ohturef
 
+    a.btn.add-btn(href="/new") Add new reference
+
     h2 Book references
     section#book-references
         table
@@ -25,7 +27,6 @@ block content
                     td= line.address
                     td= line.pages
                     td: a(href="#") ×
-        a.btn.add-btn(href="/new") Add new
 
     h2 Article references
     section#article-references
@@ -55,7 +56,6 @@ block content
                     td= line.publisher
                     td= line.address
                     td: a(href="#") ×
-        a.btn.add-btn(href="/new") Add new
 
     h2 Inproceedings references
     section#inproceedings-references
@@ -81,7 +81,6 @@ block content
                     td= line.publisher
                     td= line.address
                     td: a(href="#") ×
-        a.btn.add-btn(href="/new") Add new
 
     h2 Export BibTeX
     section#bibtex-export
