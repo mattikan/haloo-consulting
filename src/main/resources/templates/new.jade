@@ -46,7 +46,7 @@ block content
             label.optional(for="booktitle") Booktitle
             input#booktitle(name="booktitle" type="text" size="80" placeholder="Optional")
 
-        input.btn.submit-btn.btn-lg(type="submit" value="Create")
+        input.btn.submit-btn.btn-lg(id="submit" type="submit" value="Create")
 
         script.
             function initialize() {
@@ -58,15 +58,16 @@ block content
 
             function hideFields() {
                 $('.field').hide();
+                $('input').prop('disabled', true);
                 $('#type').show();
+                $('#submit').prop('disabled', false);
             }
 
             window.onload = initialize;
 
             $(document).ready(function() {
               $('#type').change(function() {
-                $('.field').hide();
-                $('#type').show();
-                $('#' + $('option:selected', this).data('show').join(', #')).show();
+                hideFields()
+                $('#' + $('option:selected', this).data('show').join(', #')).show().prop('disabled', false);
               });
             });

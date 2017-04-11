@@ -47,7 +47,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
 
         post("/new", { req, res ->
             var id = req.queryParams("id")
-            var types = req.queryParams("type").orEmpty()
+            var types = req.queryParams("type")
             var type: RefType = RefType.BOOK
             if (types.trim().toLowerCase() == "article") {
                 type = RefType.ARTICLE
@@ -63,8 +63,8 @@ class Server(val data: KotlinEntityDataStore<Any>){
             var address = req.queryParams("address").orEmpty()
             var pages = req.queryParams("pages").orEmpty()
             var journal = req.queryParams("journal").orEmpty()
-            var volume = req.queryParams("volume")
-            var number = req.queryParams("number")
+            var volume = req.queryParams("volume").orEmpty()
+            var number = req.queryParams("number").orEmpty()
             var booktitle = req.queryParams("booktitle").orEmpty()
             var ref: Reference = ReferenceEntity()
             ref.id = id
