@@ -1,6 +1,7 @@
 
 package fi.halooconsulting.ohturef
 
+import fi.halooconsulting.ohturef.database.Database
 import fi.halooconsulting.ohturef.model.*
 import fi.halooconsulting.ohturef.web.Server
 import io.requery.sql.KotlinConfiguration
@@ -15,30 +16,26 @@ import javax.sql.DataSource
 // Models ja ReferenceEntity saattavat näyttää siltä että eivät ole olemassa, mutta älkööt huolestuko, kokeilkaa
 // gradle buildia
 fun main(args: Array<String>) {
-
-    val source: DataSource
     val dburl = System.getenv("JDBC_DATABASE_URL")
+
+    val db: Database
+
     if (dburl == null) {
-        println("No database URL found - using sqlite @ jdbc:sqlite:database.db")
-        source = SQLiteDataSource()
-        source.url = "jdbc:sqlite:database.db"
+        println("No database URL found - using sqlite")
+        db = Database.sqlite(creationMode = TableCreationMode.DROP_CREATE)
     } else {
         println("Using PostgreSQL @ $dburl")
-        source = PGSimpleDataSource()
-        source.url = dburl
+        db = Database.postgres(dburl, TableCreationMode.DROP_CREATE)
     }
-    val model = Models.DEFAULT
-    SchemaModifier(source, model).createTables(TableCreationMode.DROP_CREATE) //TODO: Poista tää ja populate
-    val conf = KotlinConfiguration(model = model, dataSource = source)
-    val data = KotlinEntityDataStore<Any>(conf)
-    populate(data)
 
-    val server = Server(data)
+    populate(db)
+
+    val server = Server(db)
     server.start()
     
 }
 
-fun populate(data: KotlinEntityDataStore<Any>) {
+fun populate(data: Database) {
     val ids = arrayOf("VPL11", "BA04", "Martin09")
     val types = arrayOf(RefType.INPROCEEDINGS, RefType.BOOK, RefType.BOOK)
     val authors = arrayOf("Vihavainen", "Beck", "Martin")
@@ -55,16 +52,16 @@ fun populate(data: KotlinEntityDataStore<Any>) {
         ref.year = years[i]
         refs.add(ref)
     }
-    data.insert(entities = refs)
+    data.store.insert(entities = refs)
 
     val testTag = TagEntity()
     testTag.name = "Testitagi 1"
-    data.insert(testTag)
+    data.store.insert(testTag)
 
     val testRefTag = ReferenceTagEntity()
     testRefTag.ref = refs.first()
     testRefTag.tag = testTag
-    data.insert(testRefTag)
+    data.store.insert(testRefTag)
 }
 
 fun getOne(): Int = 1

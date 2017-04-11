@@ -1,6 +1,7 @@
 package fi.halooconsulting.ohturef.web
 
 import fi.halooconsulting.ohturef.conversion.BibTexConverter
+import fi.halooconsulting.ohturef.database.Database
 import fi.halooconsulting.ohturef.model.RefType
 import fi.halooconsulting.ohturef.model.Reference
 import fi.halooconsulting.ohturef.model.ReferenceEntity
@@ -11,7 +12,7 @@ import spark.Spark.*
 import spark.template.jade.JadeTemplateEngine
 import java.util.stream.Collectors
 
-class Server(val data: KotlinEntityDataStore<Any>){
+class Server(val db: Database){
     init {
         println("Created Ohturef server.")
     }
@@ -28,7 +29,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
         externalStaticFileLocation("${System.getProperty("user.dir")}/public")
 
         get("/", { req, res ->
-            val refs = data {
+            val refs = db.store {
                 select(Reference::class)
             }.get().groupBy { k -> k.type }.mapKeys { k -> k.key.name.toLowerCase() }.toMutableMap()
 
@@ -79,14 +80,14 @@ class Server(val data: KotlinEntityDataStore<Any>){
             ref.volume = volume.toIntOrNull()
             ref.number = number.toIntOrNull()
             ref.booktitle = booktitle
-            data.insert(ref)
+            db.store.insert(ref)
             res.redirect("/")
             val vars = null
             ModelAndView(vars, "index.jade")
         }, templateEngine)
 
         get("/bibtex", { req, res ->
-            val refs = data { select(Reference::class) }.get().toList()
+            val refs = db.store { select(Reference::class) }.get().toList()
     
             var converted = refs.map { BibTexConverter.toBibTex(it) }.joinToString("\n\n")
             res.header("Content-Type", "text/plain")
@@ -94,7 +95,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
         })
 
         get("/:id/bibtex", { req, res ->
-            val ref = data {
+            val ref = db.store {
                 select(Reference::class) where (Reference::id eq req.params("id"))
             }.get().first()
 
@@ -104,7 +105,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
         })
 
         get("/:id", { req, res ->
-            val ref = data {
+            val ref = db.store {
                 select(Reference::class) where (Reference::id eq req.params("id"))
             }.get().first()
             val vars = hashMapOf("reference" to ref)
