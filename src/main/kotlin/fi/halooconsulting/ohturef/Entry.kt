@@ -1,11 +1,8 @@
 
 package fi.halooconsulting.ohturef
 
+import fi.halooconsulting.ohturef.model.*
 import fi.halooconsulting.ohturef.web.Server
-import fi.halooconsulting.ohturef.model.Reference
-import fi.halooconsulting.ohturef.model.ReferenceEntity
-import fi.halooconsulting.ohturef.model.Models
-import fi.halooconsulting.ohturef.model.RefType
 import io.requery.sql.KotlinConfiguration
 import io.requery.sql.KotlinEntityDataStore
 import io.requery.sql.SchemaModifier
@@ -59,6 +56,15 @@ fun populate(data: KotlinEntityDataStore<Any>) {
         refs.add(ref)
     }
     data.insert(entities = refs)
+
+    val testTag = TagEntity()
+    testTag.name = "Testitagi 1"
+    data.insert(testTag)
+
+    val testRefTag = ReferenceTagEntity()
+    testRefTag.ref = refs.first()
+    testRefTag.tag = testTag
+    data.insert(testRefTag)
 }
 
 fun getOne(): Int = 1

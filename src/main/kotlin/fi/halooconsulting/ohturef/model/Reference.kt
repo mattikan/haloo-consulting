@@ -25,6 +25,6 @@ interface Reference : Persistable {
     var number: Int?
     var booktitle: String?
 
-    // TODO: Loput kentät
-
+    @get:OneToMany
+    var tags: Set<ReferenceTag>
 }
