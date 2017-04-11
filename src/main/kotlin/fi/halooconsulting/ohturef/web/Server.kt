@@ -88,6 +88,13 @@ class Server(val db: Database){
             converted
         })
 
+        delete("/:id", {req, res ->
+            data.delete(data {select(Reference::class) where (Reference::id eq req.params("id"))})
+            res.redirect("/")
+            val vars = null
+            ModelAndView(vars, "index.jade")
+        }, templateEngine)
+
         get("/:id/bibtex", { req, res ->
             val ref = db.store {
                 select(Reference::class) where (Reference::id eq req.params("id"))
