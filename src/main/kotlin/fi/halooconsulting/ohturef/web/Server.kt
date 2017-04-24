@@ -8,6 +8,7 @@ import io.requery.kotlin.eq
 import io.requery.sql.KotlinEntityDataStore
 import spark.ModelAndView
 import spark.Spark.*
+import spark.route.RouteOverview
 import spark.template.jade.JadeTemplateEngine
 import java.util.stream.Collectors
 
@@ -26,6 +27,10 @@ class Server(val data: KotlinEntityDataStore<Any>){
         }
 
         externalStaticFileLocation("${System.getProperty("user.dir")}/public")
+
+        delete("/:id", { req, res ->
+            "haloo"
+        })
 
         get("/", { req, res ->
             val refs = data {
@@ -110,12 +115,7 @@ class Server(val data: KotlinEntityDataStore<Any>){
             val vars = hashMapOf("reference" to ref)
             ModelAndView(vars, "reference.jade")
         }, templateEngine)
-
-        delete("/:id", { req, res ->
-            data.delete(data {select(Reference::class) where (Reference::id eq req.params("id"))})
-            res.redirect("/")
-        })
-
+        RouteOverview.enableRouteOverview();
         println("Started Ohturef server in port ${port()}")
     }
 }
