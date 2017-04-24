@@ -8,6 +8,7 @@ import fi.halooconsulting.ohturef.model.ReferenceEntity
 import io.requery.kotlin.eq
 import spark.ModelAndView
 import spark.Spark.*
+import spark.route.RouteOverview
 import spark.template.jade.JadeTemplateEngine
 
 class Server(val db: Database){
@@ -21,6 +22,10 @@ class Server(val db: Database){
         port(Server.getPort())
 
         externalStaticFileLocation("${System.getProperty("user.dir")}/public")
+
+        delete("/:id", { req, res ->
+            "haloo"
+        })
 
         get("/", { req, res ->
             val refs = db.store {
@@ -105,12 +110,7 @@ class Server(val db: Database){
             val vars = hashMapOf("reference" to ref)
             ModelAndView(vars, "reference.jade")
         }, templateEngine)
-
-        delete("/:id", { req, res ->
-            data.delete(data {select(Reference::class) where (Reference::id eq req.params("id"))})
-            res.redirect("/")
-        })
-
+        RouteOverview.enableRouteOverview();
         println("Started Ohturef server in port ${port()}")
     }
 
