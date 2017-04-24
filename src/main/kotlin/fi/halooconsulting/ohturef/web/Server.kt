@@ -6,11 +6,9 @@ import fi.halooconsulting.ohturef.model.RefType
 import fi.halooconsulting.ohturef.model.Reference
 import fi.halooconsulting.ohturef.model.ReferenceEntity
 import io.requery.kotlin.eq
-import io.requery.sql.KotlinEntityDataStore
 import spark.ModelAndView
 import spark.Spark.*
 import spark.template.jade.JadeTemplateEngine
-import java.util.stream.Collectors
 
 class Server(val db: Database){
     init {
@@ -20,11 +18,7 @@ class Server(val db: Database){
     fun start() {
         val templateEngine = JadeTemplateEngine()
 
-        if (System.getenv("PORT") != null) {
-            port(System.getenv("PORT").toInt())
-        } else {
-            port(8000)
-        }
+        port(Server.getPort())
 
         externalStaticFileLocation("${System.getProperty("user.dir")}/public")
 
@@ -113,5 +107,15 @@ class Server(val db: Database){
         }, templateEngine)
 
         println("Started Ohturef server in port ${port()}")
+    }
+
+    companion object Server {
+        fun getPort(): Int {
+            if (System.getenv("PORT") != null) {
+                return System.getenv("PORT").toInt()
+            } else {
+                return 8000
+            }
+        }
     }
 }

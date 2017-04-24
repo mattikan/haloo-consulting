@@ -1,73 +1,52 @@
 extends layout
 
+block scripts
+    script(src="/js/new.js")
+
 block content
     h1 New reference
     a(href="/") ◀ Return to listing
     form(action="/new" method="post")
-        .field(id="type")
+        .type-field.type
             label(for="type") Type
-            select(name="type" id="type" required)
+            select#type(name="type" required)
                 option(value="" disabled selected) --Choose reference type--
-                option(value="Book" data-show='["id","author","title","year","publisher","address"]') Book
-                option(value="Inproceedings" data-show='["id","author","title","year","booktitle","pages","publisher","address"]') Inproceedings
-                option(value="Article" data-show='["id","author","title","year","pages","journal","volume","number","publisher","address"]') Article
-        .field(id="id")
+                option(value="Book" data-show='id author title year publisher address') Book
+                option(value="Inproceedings" data-show='id author title year booktitle pages publisher address') Inproceedings
+                option(value="Article" data-show='id author title year pages journal volume number publisher address') Article
+        .field.id
             label(for="id") Id
             input#id(name="id" type="text" size="10" required)
             a(href="#").btn.inline-btn Generate
-        .field(id="author")
+        .field.author
             label(for="author" required) Author
             input#author(name="author" type="text" size="50")
-        .field(id="title")
+        .field.title
             label(for="title" required) Title
             input#title(name="title" type="text" size="80")
-        .field(id="year")
+        .field.year
             label(for="year" required) Year
             input#year(name="year" type="number" min="1000" max="2017" value="2000")
-        .field(id="publisher")
+        .field.publisher
             label.optional(for="publisher") Publisher
             input#publisher(name="publisher" type="text" size="50" placeholder="Optional")
-        .field(id="address")
+        .field.address
             label.optional(for="address") Address
             input#address(name="address" type="text" size="50" placeholder="Optional")
-        .field(id="pages")
+        .field.pages
             label.optional(for="pages") Pages
             input#pages(name="pages" type="text" size="30" placeholder="Optional")
-        .field(id="journal")
+        .field.journal
             label.optional(for="journal") Journal
             input#journal(name="journal" type="text" size="50" placeholder="Optional")
-        .field(id="volume")
+        .field.volume
             label.optional(for="volume") Volume
             input#volume(name="volume" type="number" min="1")
-        .field(id="number")
+        .field.number
             label.optional(for="number") Number
             input#number(name="number" type="number" min="1")
-        .field(id="booktitle")
+        .field.booktitle
             label.optional(for="booktitle") Booktitle
             input#booktitle(name="booktitle" type="text" size="80" placeholder="Optional")
 
         input.btn.submit-btn.btn-lg(id="submit" type="submit" value="Create")
-
-        script.
-            function initialize() {
-                hideFields();
-                $('#type option').prop('selected', function() {
-                    return this.defaultSelected;
-                })
-            }
-
-            function hideFields() {
-                $('.field').hide();
-                $('input').prop('disabled', true);
-                $('#type').show();
-                $('#submit').prop('disabled', false);
-            }
-
-            window.onload = initialize;
-
-            $(document).ready(function() {
-              $('#type').change(function() {
-                hideFields()
-                $('#' + $('option:selected', this).data('show').join(', #')).show().prop('disabled', false);
-              });
-            });

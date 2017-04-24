@@ -63,5 +63,3 @@ fun populate(data: Database) {
     testRefTag.tag = testTag
     data.store.insert(testRefTag)
 }
-
-fun getOne(): Int = 1
