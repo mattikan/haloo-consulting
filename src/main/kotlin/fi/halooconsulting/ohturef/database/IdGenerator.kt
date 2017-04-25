@@ -1,8 +1,6 @@
 package fi.halooconsulting.ohturef.database
 
-import fi.halooconsulting.ohturef.model.Reference
 import fi.halooconsulting.ohturef.web.IdGenerationRequest
-import io.requery.kotlin.like
 import kotlin.coroutines.experimental.buildSequence
 
 class IdGenerator(private val database: Database) {
@@ -29,9 +27,7 @@ class IdGenerator(private val database: Database) {
         }
     }
 
-    private fun getIdsStartingWith(prefix: String) : List<String> {
-        return database.store {
-            select(Reference::class) where Reference::id.like("$prefix%")
-        }.get().map {it.id}.toList()
+    private fun getIdsStartingWith(prefix: String) : Set<String> {
+        return database.getReferencesLike("$prefix%").map{it.id}.toSet()
     }
 }

@@ -1,6 +1,7 @@
 package fi.halooconsulting.ohturef.database
 
 import fi.halooconsulting.ohturef.model.*
+import io.requery.kotlin.like
 import io.requery.sql.KotlinConfiguration
 import io.requery.sql.KotlinEntityDataStore
 import io.requery.sql.SchemaModifier
@@ -10,21 +11,31 @@ import org.sqlite.SQLiteDataSource
 import java.util.TreeSet
 import javax.sql.DataSource
 
-class Database(private val source: DataSource, creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS) {
+interface Database {
+    fun getReferencesLike(likePattern: String): List<Reference>
+}
+
+class SqlDatabase(private val source: DataSource, creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS) : Database {
     val store: KotlinEntityDataStore<Any>
 
     companion object Factory {
-        fun postgres(connectionString: String, creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS): Database {
+        fun postgres(connectionString: String, creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS): SqlDatabase {
             val source = PGSimpleDataSource()
             source.url = connectionString
-            return Database(source, creationMode)
+            return SqlDatabase(source, creationMode)
         }
 
-        fun sqlite(databaseFile: String = "database.db", creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS): Database {
+        fun sqlite(databaseFile: String = "database.db", creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS): SqlDatabase {
             val source = SQLiteDataSource()
             source.url = "jdbc:sqlite:$databaseFile"
-            return Database(source, creationMode)
+            return SqlDatabase(source, creationMode)
         }
+    }
+
+    override fun getReferencesLike(likePattern: String): List<Reference> {
+        return store {
+            select(Reference::class) where Reference::id.like(likePattern)
+        }.get().toList()
     }
 
     fun populateWithTestData() {

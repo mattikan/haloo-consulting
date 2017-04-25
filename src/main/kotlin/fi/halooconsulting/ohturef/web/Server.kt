@@ -1,7 +1,7 @@
 package fi.halooconsulting.ohturef.web
 
 import fi.halooconsulting.ohturef.conversion.BibTexConverter
-import fi.halooconsulting.ohturef.database.Database
+import fi.halooconsulting.ohturef.database.SqlDatabase
 import fi.halooconsulting.ohturef.database.IdGenerator
 import fi.halooconsulting.ohturef.model.RefType
 import fi.halooconsulting.ohturef.model.Reference
@@ -13,7 +13,7 @@ import spark.Spark.*
 import spark.route.RouteOverview
 import spark.template.jade.JadeTemplateEngine
 
-class Server(val db: Database){
+class Server(val db: SqlDatabase){
     init {
         println("Created Ohturef server.")
     }
