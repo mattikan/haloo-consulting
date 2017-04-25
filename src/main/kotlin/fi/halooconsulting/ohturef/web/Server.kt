@@ -7,6 +7,7 @@ import fi.halooconsulting.ohturef.model.Reference
 import fi.halooconsulting.ohturef.model.ReferenceEntity
 import io.requery.kotlin.eq
 import spark.ModelAndView
+import spark.Spark
 import spark.Spark.*
 import spark.route.RouteOverview
 import spark.template.jade.JadeTemplateEngine
@@ -116,6 +117,10 @@ class Server(val db: Database){
         }, templateEngine)
         RouteOverview.enableRouteOverview();
         println("Started Ohturef server in port ${port()}")
+    }
+
+    fun stop() {
+        Spark.stop()
     }
 
     companion object Server {
