@@ -6,6 +6,7 @@ import cucumber.api.junit.Cucumber
 import fi.halooconsulting.ohturef.database.Database
 import io.requery.sql.TableCreationMode
 import org.junit.AfterClass
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.runner.RunWith
 
@@ -18,14 +19,13 @@ class RunCucumberTests {
         val server = Server(db)
 
         @BeforeClass @JvmStatic
-        fun setup() {
+        fun setupClass() {
             server.start()
         }
 
         @AfterClass @JvmStatic
-        fun teardown() {
+        fun tearDownClass() {
             server.stop()
         }
-
     }
 }

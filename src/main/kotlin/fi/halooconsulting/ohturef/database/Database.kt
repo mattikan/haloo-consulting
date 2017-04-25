@@ -1,6 +1,6 @@
 package fi.halooconsulting.ohturef.database
 
-import fi.halooconsulting.ohturef.model.Models
+import fi.halooconsulting.ohturef.model.*
 import io.requery.sql.KotlinConfiguration
 import io.requery.sql.KotlinEntityDataStore
 import io.requery.sql.SchemaModifier
