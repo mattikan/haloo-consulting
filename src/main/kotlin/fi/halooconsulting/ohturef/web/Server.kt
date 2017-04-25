@@ -24,6 +24,10 @@ class Server(val db: Database){
         externalStaticFileLocation("${System.getProperty("user.dir")}/public")
 
         delete("/:id", { req, res ->
+            val ref = db.store {
+                select(Reference::class) where (Reference::id eq req.params("id"))
+            }.get().first()
+            db.store.delete(ref)
             "haloo"
         })
 

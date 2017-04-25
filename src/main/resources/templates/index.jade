@@ -29,7 +29,7 @@ block content
                         td= line.publisher
                         td= line.address
                         td= line.pages
-                        td: a(href="/#{line.id}/delete") delete
+                        td: button.btn.inline-btn(onclick='deleteReference("#{line.id}")') Delete
 
     h2 Article references
     section#article-references
@@ -61,7 +61,7 @@ block content
                         td= line.pages
                         td= line.publisher
                         td= line.address
-                        td: a(href="/#{line.id}/delete") delete
+                        td: button.btn.inline-btn(onclick='deleteReference("#{line.id}")') Delete
 
     h2 Inproceedings references
     section#inproceedings-references
@@ -89,7 +89,7 @@ block content
                         td= line.pages
                         td= line.publisher
                         td= line.address
-                        td: button.btn.inline-btn(onclick="deleteReference('#{line.id}')") delete
+                        td: button.btn.inline-btn(onclick='deleteReference("#{line.id}")') Delete
 
     h2 Export BibTeX
     section#bibtex-export
@@ -111,6 +111,9 @@ block content
         function deleteReference(id) {
             $.ajax({
                 url: '/' + id,
-                method: 'DELETE'
+                method: 'DELETE',
+                success: function(result) {
+                    location.reload()
+                }
             });
         };
