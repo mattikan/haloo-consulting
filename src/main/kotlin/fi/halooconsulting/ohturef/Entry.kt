@@ -28,38 +28,9 @@ fun main(args: Array<String>) {
         db = Database.postgres(dburl, TableCreationMode.DROP_CREATE)
     }
 
-    populate(db)
+    db.populateWithTestData()
 
     val server = Server(db)
     server.start()
-    
 }
 
-fun populate(data: Database) {
-    val ids = arrayOf("VPL11", "BA04", "Martin09")
-    val types = arrayOf(RefType.INPROCEEDINGS, RefType.BOOK, RefType.BOOK)
-    val authors = arrayOf("Vihavainen", "Beck", "Martin")
-    val titles = arrayOf("Extreme Apprenticeship Method", "Extreme Programming Explained", "Clean Code")
-    val years = arrayOf(2011, 2004, 2008)
-
-    val refs = TreeSet(Comparator<Reference> { lhs, rhs -> lhs.id.compareTo(rhs.id)})
-    for (i in ids.indices) {
-        val ref: Reference = ReferenceEntity()
-        ref.id = ids[i]
-        ref.type = types[i]
-        ref.author = authors[i]
-        ref.title = titles[i]
-        ref.year = years[i]
-        refs.add(ref)
-    }
-    data.store.insert(entities = refs)
-
-    val testTag = TagEntity()
-    testTag.name = "Testitagi 1"
-    data.store.insert(testTag)
-
-    val testRefTag = ReferenceTagEntity()
-    testRefTag.ref = refs.first()
-    testRefTag.tag = testTag
-    data.store.insert(testRefTag)
-}

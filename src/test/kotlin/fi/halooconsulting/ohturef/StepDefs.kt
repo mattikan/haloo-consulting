@@ -1,17 +1,11 @@
 package fi.halooconsulting.ohturef
 
-import com.gargoylesoftware.htmlunit.WebAssert
 import fi.halooconsulting.ohturef.web.Server
-
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
-import fi.halooconsulting.ohturef.database.Database
-import fi.halooconsulting.ohturef.model.Reference
-import io.requery.kotlin.eq
-import org.junit.After
+import org.junit.AfterClass
 import org.junit.Assert
-import org.openqa.selenium.By
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.support.ui.Select
 
@@ -70,16 +64,8 @@ class StepDefs {
         Assert.assertNotNull(element)
     }
 
-    @After
+    @AfterClass
     fun tearDown() {
         driver.quit()
-
-        if (latestRef != null) {
-            val db = Database.sqlite()
-            val refEntity = db.store {
-                select (Reference::class) where (Reference::id eq latestRef)
-            }.get().first()
-            db.store.delete(refEntity)
-        }
     }
 }

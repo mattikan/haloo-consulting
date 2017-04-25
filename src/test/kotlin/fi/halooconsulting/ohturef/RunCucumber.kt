@@ -6,6 +6,7 @@ import cucumber.api.junit.Cucumber
 import fi.halooconsulting.ohturef.database.Database
 import io.requery.sql.TableCreationMode
 import org.junit.AfterClass
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.runner.RunWith
 
@@ -17,8 +18,13 @@ class RunCucumberTests {
         val db = Database.sqlite(creationMode = TableCreationMode.DROP_CREATE)
         val server = Server(db)
 
-        @BeforeClass @JvmStatic
+        @Before
         fun setup() {
+            db.populateWithTestData()
+        }
+
+        @BeforeClass @JvmStatic
+        fun setUpClass() {
             server.start()
         }
 

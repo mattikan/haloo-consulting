@@ -2,6 +2,7 @@ package fi.halooconsulting.ohturef.web
 
 import fi.halooconsulting.ohturef.conversion.BibTexConverter
 import fi.halooconsulting.ohturef.database.Database
+import fi.halooconsulting.ohturef.database.IdGenerator
 import fi.halooconsulting.ohturef.model.RefType
 import fi.halooconsulting.ohturef.model.Reference
 import fi.halooconsulting.ohturef.model.ReferenceEntity
@@ -71,7 +72,7 @@ class Server(val db: Database){
             var volume = req.queryParams("volume").orEmpty()
             var number = req.queryParams("number").orEmpty()
             var booktitle = req.queryParams("booktitle").orEmpty()
-            var ref: Reference = ReferenceEntity()
+            var ref = ReferenceEntity()
             ref.id = id
             ref.type = type
             ref.author = author
@@ -115,7 +116,16 @@ class Server(val db: Database){
             val vars = hashMapOf("reference" to ref)
             ModelAndView(vars, "reference.jade")
         }, templateEngine)
-        RouteOverview.enableRouteOverview();
+
+        post("/generate_id", { req, res ->
+            val generationRequest = IdGenerationRequest.fromJson(req.body())
+            val generator = IdGenerator(db)
+            val id = generator.generateUniqueId(generationRequest)
+            res.header("Content-Type", "text/plain")
+            id
+        })
+
+        RouteOverview.enableRouteOverview()
         println("Started Ohturef server in port ${port()}")
     }
 
