@@ -15,7 +15,13 @@ interface Database {
     fun getReferencesLike(likePattern: String): List<Reference>
 }
 
-class SqlDatabase(private val source: DataSource, creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS) : Database {
+open class NopDatabase : Database {
+    override fun getReferencesLike(likePattern: String): List<Reference> {
+        return emptyList()
+    }
+}
+
+class SqlDatabase(source: DataSource, creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS) : Database {
     val store: KotlinEntityDataStore<Any>
 
     companion object Factory {

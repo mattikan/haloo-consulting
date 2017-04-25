@@ -2,6 +2,7 @@ package fi.halooconsulting.ohturef
 
 import fi.halooconsulting.ohturef.database.Database
 import fi.halooconsulting.ohturef.database.IdGenerator
+import fi.halooconsulting.ohturef.database.NopDatabase
 import fi.halooconsulting.ohturef.model.Reference
 import fi.halooconsulting.ohturef.model.ReferenceEntity
 import fi.halooconsulting.ohturef.web.IdGenerationRequest
@@ -52,7 +53,7 @@ class IdGeneration {
     }
 
     private fun mockDbWithEntries(vararg refs: Reference): Database {
-        return object : Database {
+        return object : NopDatabase() {
             override fun getReferencesLike(likePattern: String): List<Reference> {
                 return listOf(*refs)
             }
