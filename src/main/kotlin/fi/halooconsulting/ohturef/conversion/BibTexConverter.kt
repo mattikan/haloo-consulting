@@ -9,14 +9,14 @@ object BibTexConverter {
         val sb = StringBuilder()
 
         sb.appendln("@${ref.type.name.toLowerCase()}{${ref.id},")
-        sb.appendln("author = {${ref.author}},")
-        sb.appendln("title = {${ref.title}},")
-        sb.appendln("year = {${ref.year}},")
+        sb.appendln("    author = {${ref.author}},")
+        sb.appendln("    title = {${ref.title}},")
+        sb.appendln("    year = {${ref.year}},")
 
         val optionalProps = fieldSelectors
             .map { fs -> Pair(fs.name, fs.selector(ref)) }
             .filter { pair -> !pair.second.isNullOrEmpty() }
-            .map { pair -> "${pair.first} = {${pair.second}}" }
+            .map { pair -> "    ${pair.first} = {${pair.second}}" }
             .joinToString(",\n")
 
         sb.append(optionalProps)
