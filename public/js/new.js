@@ -24,7 +24,7 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify({
                 year: $('#year').val(),
-                authors: [$('#author').val()]
+                authors: $('#author').val().split("\n")
             }),
             success: function(newId) { $('#id').val(newId) }
         });

@@ -15,8 +15,8 @@ block content
                 option(value="Inproceedings" data-show='id author title year booktitle pages publisher address') Inproceedings
                 option(value="Article" data-show='id author title year pages journal volume number publisher address') Article
         .field.author
-            label(for="author" required) Author
-            input#author(name="author" type="text" size="50")
+            label(for="author" required) Authors
+            textarea#author(name="author" rows="3" columns="50")
         .field.title
             label(for="title" required) Title
             input#title(name="title" type="text" size="80")
