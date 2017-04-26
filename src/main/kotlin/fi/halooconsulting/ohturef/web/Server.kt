@@ -1,11 +1,9 @@
 package fi.halooconsulting.ohturef.web
 
 import fi.halooconsulting.ohturef.conversion.BibTexConverter
-import fi.halooconsulting.ohturef.database.SqlDatabase
 import fi.halooconsulting.ohturef.database.IdGenerator
-import fi.halooconsulting.ohturef.model.RefType
-import fi.halooconsulting.ohturef.model.Reference
-import fi.halooconsulting.ohturef.model.ReferenceEntity
+import fi.halooconsulting.ohturef.database.SqlDatabase
+import fi.halooconsulting.ohturef.model.*
 import io.requery.kotlin.eq
 import spark.ModelAndView
 import spark.Spark
@@ -127,6 +125,22 @@ class Server(val db: SqlDatabase){
 
         RouteOverview.enableRouteOverview()
         println("Started Ohturef server in port ${port()}")
+
+        post("/:id/tag", { req, res ->
+            var id = req.queryParams("id")
+            var name = req.queryParams("name")
+            val ref = db.store {
+                select(Reference::class) where (Reference::id eq req.params("id"))
+            }.get().first()
+            var tag = TagEntity()
+            var reftag = ReferenceTagEntity()
+            tag.name = name
+            reftag.ref = ref
+            reftag.tag = tag
+            db.store.insert(tag)
+            db.store.insert(reftag)
+            res.redirect("/:id")
+        })
     }
 
     fun stop() {

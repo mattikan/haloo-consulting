@@ -1,11 +1,25 @@
 Feature: Reference creation
 
-  Scenario: New reference is created normally
+  Scenario: New book reference is created
     Given new reference page is loaded
     When reference type is set to Book
-    And author is set to "Keijo"
-    And title is set to "Tarina Keijosta"
-    And id is set to "KTK1"
+    And field "author" is set to "Keijo"
+    And field "title" is set to "Tarina Keijosta"
+    And field "id" is set to "KTK1"
+    And field "year" is set to "2017"
     And create is clicked
     When main page is loaded
     Then reference with title "Tarina Keijosta" exists
+    And reference with title "Tarina Keijosta" is visible
+
+  Scenario: New inproceedings reference is created
+    Given new reference page is loaded
+    When reference type is set to Inproceedings
+    And field "author" is set to "Keijo"
+    And field "title" is set to "Tarina Keijosta 2"
+    And field "id" is set to "KTK1"
+    And field "booktitle" is set to "Kirjan otsikko"
+    And create is clicked
+    When main page is loaded
+    Then reference with title "Tarina Keijosta 2" exists
+    And reference with title "Tarina Keijosta 2" is visible
