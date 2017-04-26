@@ -14,10 +14,6 @@ block content
                 option(value="Book" data-show='id author title year publisher address') Book
                 option(value="Inproceedings" data-show='id author title year booktitle pages publisher address') Inproceedings
                 option(value="Article" data-show='id author title year pages journal volume number publisher address') Article
-        .field.id
-            label(for="id") Id
-            input#id(name="id" type="text" size="10" required)
-            a(href="#").btn.inline-btn Generate
         .field.author
             label(for="author" required) Author
             input#author(name="author" type="text" size="50")
@@ -48,5 +44,9 @@ block content
         .field.booktitle
             label.optional(for="booktitle") Booktitle
             input#booktitle(name="booktitle" type="text" size="80" placeholder="Optional")
+        .field.id
+            label(for="id") Id
+            input#id(name="id" type="text" size="10" required)
+            a#generate-id(href="#").btn.inline-btn Generate
 
         input.btn.submit-btn.btn-lg(id="submit" type="submit" value="Create")
