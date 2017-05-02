@@ -63,7 +63,7 @@ class StepDefs {
     @When("^create is clicked$")
     fun create_is_clicked() {
         val createButton = driver.findElement(By.id("submit"))
-        createButton.submit()
+        createButton.click()
     }
 
     @When("^id generation button is clicked$")
