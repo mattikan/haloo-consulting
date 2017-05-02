@@ -9,6 +9,7 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeUnit
 
 @RunWith(Cucumber::class)
 @CucumberOptions(plugin = arrayOf("pretty"))
@@ -26,6 +27,7 @@ class RunCucumberTests {
         @BeforeClass @JvmStatic
         fun setUpClass() {
             server.start()
+            TimeUnit.SECONDS.sleep(20)
         }
 
         @AfterClass @JvmStatic

@@ -15,6 +15,7 @@ import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.Select
 import org.openqa.selenium.support.ui.WebDriverWait
 import java.net.URL
+import java.sql.Time
 import java.util.concurrent.TimeUnit
 
 class StepDefs {
@@ -38,6 +39,7 @@ class StepDefs {
     fun main_page_loaded() {
         driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS)
         driver.get(baseUrl)
+        TimeUnit.SECONDS.sleep(5)
     }
 
     @Given("^new reference page is loaded$")
