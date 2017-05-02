@@ -24,8 +24,8 @@ class StepDefs {
 
     init {
         var caps = DesiredCapabilities.firefox()
-        caps.setCapability("platform", "Linux")
-        caps.setCapability("version", "45.0")
+        caps.setCapability("platform", "Windows 10")
+        caps.setCapability("version", "52.0")
         caps.setCapability("tunnel-identifier", System.getenv("TRAVIS_JOB_NUMBER"))
         caps.setCapability("build", System.getenv("TRAVIS_BUILD_NUMBER"))
         driver = RemoteWebDriver(URL("http://$username:$accessKey@ondemand.saucelabs.com:4445/wd/hub"), caps)
