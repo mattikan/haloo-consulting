@@ -9,14 +9,26 @@ import fi.halooconsulting.ohturef.web.Server
 import io.requery.kotlin.eq
 import io.requery.sql.TableCreationMode
 import org.junit.Assert
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.Select
+import java.net.URL
 
 class StepDefs {
-    val driver = HtmlUnitDriver()
+    val username = System.getenv("SAUCE_USERNAME")
+    val accessKey = System.getenv("SAUCE_ACCESS_KEY")
     val baseUrl = "http://localhost:${Server.getPort()}"
+    var driver: RemoteWebDriver
 
     var latestRef: String? = null
+
+    init {
+        var caps = DesiredCapabilities.firefox()
+        caps.setCapability("platform", "Linux")
+        caps.setCapability("version", "45.0")
+        caps.setCapability("tunnel-identifier", System.getenv("TRAVIS_JOB_NUMBER"))
+        driver = RemoteWebDriver(URL("http://$username:$accessKey@ondemand.saucelabs.com:443/wd/hub"), caps)
+    }
 
     @Given("^main page is loaded$")
     fun main_page_loaded() {
