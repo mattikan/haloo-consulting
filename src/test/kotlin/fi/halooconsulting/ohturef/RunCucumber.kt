@@ -9,6 +9,7 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.runner.RunWith
+import spark.Spark
 import java.util.concurrent.TimeUnit
 
 @RunWith(Cucumber::class)
@@ -27,6 +28,7 @@ class RunCucumberTests {
         @BeforeClass @JvmStatic
         fun setUpClass() {
             server.start()
+            Spark.awaitInitialization()
             TimeUnit.SECONDS.sleep(20)
         }
 

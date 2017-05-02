@@ -141,7 +141,6 @@ class Server(val db: SqlDatabase){
             db.store.insert(reftag)
             res.redirect("/:id")
         })
-        Spark.awaitInitialization()
     }
 
     fun stop() {
