@@ -23,7 +23,7 @@ class Server(val db: SqlDatabase){
 
         externalStaticFileLocation("${System.getProperty("user.dir")}/public")
 
-        get("/", { req, res ->
+        get("/", { _, _ ->
             val refs = db.store {
                 select(Reference::class)
             }.get().groupBy { k -> k.type }.mapKeys { k -> k.key.name.toLowerCase() }.toMutableMap()
@@ -36,9 +36,7 @@ class Server(val db: SqlDatabase){
             ModelAndView(vars, "index.jade")
         }, templateEngine)
 
-        get("/new", { req, res ->
-            ModelAndView(null, "new.jade")
-        }, templateEngine)
+        get("/new", { _, _ -> ModelAndView(emptyMap<String, Any>(), "new.jade") }, templateEngine)
 
         post("/new", { req, res ->
             val id = req.queryParams("id")
@@ -64,7 +62,6 @@ class Server(val db: SqlDatabase){
 
         get("/bibtex", { _, res ->
             val refs = db.store { select(Reference::class) }.get().toList()
-    
             var converted = refs.map { BibTexConverter.toBibTex(it) }.joinToString("\n\n")
             res.header("Content-Type", "text/plain")
             converted
@@ -78,7 +75,7 @@ class Server(val db: SqlDatabase){
             id
         })
 
-        before("/:id", { req, _ ->
+        before("/ref/:id", { req, _ ->
             val ref = db.store {
                 select(Reference::class) where (Reference::id eq req.params("id"))
             }.get().firstOrNull()
@@ -90,25 +87,29 @@ class Server(val db: SqlDatabase){
             }
         })
 
-        get("/:id/bibtex", { req, res ->
-            val ref = req.attribute<Reference>("reference")
+        get("/ref/:id/bibtex", { req, res ->
+            val ref = db.store {
+                select(Reference::class) where (Reference::id eq req.params("id"))
+            }.get().firstOrNull()
+
             val converted = BibTexConverter.toBibTex(ref)
             res.header("Content-Type", "text/plain")
             converted
         })
 
-        get("/:id", { req, _ ->
+        get("/ref/:id", { req, _ ->
             val ref = req.attribute<Reference>("reference")
             val vars = hashMapOf("reference" to ref)
             ModelAndView(vars, "reference.jade")
         }, templateEngine)
 
-        delete("/:id", { req, _ ->
+        delete("/ref/:id", { req, _ ->
             val ref = req.attribute<Reference>("reference")
             db.store.delete(ref)
+            "Reference deleted"
         })
 
-        post("/:id/tag", { req, res ->
+        post("/ref/:id/tag", { req, res ->
             val id = req.params("id")
             val ref = req.attribute<Reference>("reference")
             val name = req.queryParams("name")
@@ -123,7 +124,7 @@ class Server(val db: SqlDatabase){
             db.store.insert(tag)
             db.store.insert(reftag)
 
-            res.redirect("/$id")
+            res.redirect("/ref/$id")
         })
 
         RouteOverview.enableRouteOverview()

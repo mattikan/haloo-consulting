@@ -24,7 +24,7 @@ block content
                     tr
                         td= line.id
                         td= line.author
-                        td: a(href="/#{line.id}") #{line.title}
+                        td: a(href="/ref/#{line.id}") #{line.title}
                         td= line.year
                         td= line.publisher
                         td= line.address
@@ -53,7 +53,7 @@ block content
                     tr
                         td= line.id
                         td= line.author
-                        td: a(href="/#{line.id}") #{line.title}
+                        td: a(href="/ref/#{line.id}") #{line.title}
                         td= line.journal
                         td= line.volume
                         td= line.number
@@ -83,7 +83,7 @@ block content
                     tr
                         td= line.id
                         td= line.author
-                        td: a(href="/#{line.id}") #{line.title}
+                        td: a(href="/ref/#{line.id}") #{line.title}
                         td= line.booktitle
                         td= line.year
                         td= line.pages
@@ -110,7 +110,7 @@ block content
         });
         function deleteReference(id) {
             $.ajax({
-                url: '/' + id,
+                url: '/ref/' + id,
                 method: 'DELETE',
                 success: function(result) {
                     location.reload()

@@ -15,13 +15,13 @@ block content
                 option(value="Inproceedings" data-show='id author title year booktitle pages publisher address') Inproceedings
                 option(value="Article" data-show='id author title year pages journal volume number publisher address') Article
         .field.author
-            label(for="author" required) Authors
-            textarea#author(name="author" rows="3" columns="50")
+            label(for="author") Authors
+            textarea#author(name="author" rows="3" cols="50")
         .field.title
-            label(for="title" required) Title
+            label(for="title") Title
             input#title(name="title" type="text" size="80")
         .field.year
-            label(for="year" required) Year
+            label(for="year") Year
             input#year(name="year" type="number" min="1000" max="2017" value="2000")
         .field.publisher
             label.optional(for="publisher") Publisher
@@ -37,10 +37,10 @@ block content
             input#journal(name="journal" type="text" size="50" placeholder="Optional")
         .field.volume
             label.optional(for="volume") Volume
-            input#volume(name="volume" type="number" min="1")
+            input#volume(name="volume" type="number" min="1" placeholder="Optional")
         .field.number
             label.optional(for="number") Number
-            input#number(name="number" type="number" min="1")
+            input#number(name="number" type="number" min="1" placeholder="Optional")
         .field.booktitle
             label.optional(for="booktitle") Booktitle
             input#booktitle(name="booktitle" type="text" size="80" placeholder="Optional")
