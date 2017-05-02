@@ -27,7 +27,8 @@ class StepDefs {
         caps.setCapability("platform", "Linux")
         caps.setCapability("version", "45.0")
         caps.setCapability("tunnel-identifier", System.getenv("TRAVIS_JOB_NUMBER"))
-        driver = RemoteWebDriver(URL("http://$username:$accessKey@ondemand.saucelabs.com:443/wd/hub"), caps)
+        caps.setCapability("build", System.getenv("TRAVIS_BUILD_NUMBER"))
+        driver = RemoteWebDriver(URL("http://$username:$accessKey@ondemand.saucelabs.com:4445/wd/hub"), caps)
     }
 
     @Given("^main page is loaded$")
