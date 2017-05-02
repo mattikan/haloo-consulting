@@ -11,9 +11,9 @@ block content
 
     h3 Add tag
     section#tag-addition
-    form(action="/tag", method="post")
-        input#tag(name="tag" type="text" placeholder="Type your tag here" size="60")
-        input.btn.inline-btn(type="submit", value="Add")
+        form(action="/ref/#{reference.id}/tag", method="POST")
+            input#tag(name="tag" type="text" placeholder="Type your tag here" size="60")
+            input.btn.inline-btn(type="submit", value="Add")
 
     script.
         $(document).ready(() => {

@@ -1,6 +1,7 @@
 package fi.halooconsulting.ohturef.database
 
 import fi.halooconsulting.ohturef.model.*
+import io.requery.kotlin.eq
 import io.requery.kotlin.like
 import io.requery.sql.KotlinConfiguration
 import io.requery.sql.KotlinEntityDataStore
@@ -8,21 +9,11 @@ import io.requery.sql.SchemaModifier
 import io.requery.sql.TableCreationMode
 import org.postgresql.ds.PGSimpleDataSource
 import org.sqlite.SQLiteDataSource
-import java.util.TreeSet
+import java.util.*
 import javax.sql.DataSource
 
-interface Database {
-    fun getReferencesLike(likePattern: String): List<Reference>
-}
-
-open class NopDatabase : Database {
-    override fun getReferencesLike(likePattern: String): List<Reference> {
-        return emptyList()
-    }
-}
-
 class SqlDatabase(source: DataSource, creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS) : Database {
-    val store: KotlinEntityDataStore<Any>
+    private val store: KotlinEntityDataStore<Any>
 
     companion object Factory {
         fun postgres(connectionString: String, creationMode: TableCreationMode = TableCreationMode.CREATE_NOT_EXISTS): SqlDatabase {
@@ -74,6 +65,42 @@ class SqlDatabase(source: DataSource, creationMode: TableCreationMode = TableCre
         testRefTag.ref = refs.first()
         testRefTag.tag = testTag
         store.insert(testRefTag)
+    }
+
+    override fun getReferenceById(id: String): Reference? {
+        return store {
+            select(Reference::class) where (Reference::id eq id)
+        }.get().firstOrNull()
+    }
+
+    override fun insert(ref: Reference) {
+        store.insert(ref)
+    }
+
+    override fun insert(ref: Tag) {
+        store.insert(ref)
+    }
+
+    override fun insert(ref: ReferenceTag) {
+        store.insert(ref)
+    }
+
+    override fun delete(ref: Reference) {
+        store.delete(ref)
+    }
+
+    override fun getAllReferences(): List<Reference> {
+        return store { select(Reference::class) }.get().toList()
+    }
+
+    override fun getReferenceByTitle(title: String): Reference {
+        return store { select(Reference::class) where(Reference::title eq title) }.get().firstOrNull()
+    }
+
+    override fun getGroupedReferences(): Map<String, List<Reference>> {
+        return store {
+            select(Reference::class)
+        }.get().groupBy { k -> k.type }.mapKeys { k -> k.key.name.toLowerCase() }
     }
 
     init {

@@ -3,7 +3,16 @@ package fi.halooconsulting.ohturef.model
 import io.requery.*
 
 enum class RefType {
-    ARTICLE, BOOK, INPROCEEDINGS
+    ARTICLE, BOOK, INPROCEEDINGS;
+
+    companion object {
+        private val types: Map<String, RefType> = mapOf(
+            "article" to ARTICLE,
+            "book" to BOOK,
+            "inproceedings" to INPROCEEDINGS)
+
+        fun fromString(str: String): RefType? = types[str.trim().toLowerCase()]
+    }
 }
 
 @Entity

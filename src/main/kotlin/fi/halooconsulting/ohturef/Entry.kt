@@ -2,16 +2,8 @@
 package fi.halooconsulting.ohturef
 
 import fi.halooconsulting.ohturef.database.SqlDatabase
-import fi.halooconsulting.ohturef.model.*
 import fi.halooconsulting.ohturef.web.Server
-import io.requery.sql.KotlinConfiguration
-import io.requery.sql.KotlinEntityDataStore
-import io.requery.sql.SchemaModifier
 import io.requery.sql.TableCreationMode
-import org.sqlite.SQLiteDataSource
-import org.postgresql.ds.PGSimpleDataSource
-import java.util.*
-import javax.sql.DataSource
 
 // Models ja ReferenceEntity saattavat näyttää siltä että eivät ole olemassa, mutta älkööt huolestuko, kokeilkaa
 // gradle buildia
