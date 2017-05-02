@@ -4,7 +4,6 @@ import fi.halooconsulting.ohturef.conversion.BibTexConverter
 import fi.halooconsulting.ohturef.database.IdGenerator
 import fi.halooconsulting.ohturef.database.SqlDatabase
 import fi.halooconsulting.ohturef.model.*
-import io.requery.kotlin.eq
 import spark.ModelAndView
 import spark.Spark
 import spark.Spark.*
@@ -24,10 +23,7 @@ class Server(val db: SqlDatabase){
         externalStaticFileLocation("${System.getProperty("user.dir")}/public")
 
         get("/", { _, _ ->
-            val refs = db.store {
-                select(Reference::class)
-            }.get().groupBy { k -> k.type }.mapKeys { k -> k.key.name.toLowerCase() }.toMutableMap()
-
+            val refs = db.getGroupedReferences().toMutableMap()
             refs["book"] = refs.getOrDefault("book", emptyList())
             refs["article"] = refs.getOrDefault("article", emptyList())
             refs["inproceedings"] = refs.getOrDefault("inproceedings", emptyList())
@@ -56,13 +52,13 @@ class Server(val db: SqlDatabase){
             ref.number = req.queryParams("number").orEmpty().toIntOrNull()
             ref.booktitle = req.queryParams("booktitle").orEmpty()
 
-            db.store.insert(ref)
+            db.insert(ref)
             res.redirect("/")
         })
 
         get("/bibtex", { _, res ->
-            val refs = db.store { select(Reference::class) }.get().toList()
-            var converted = refs.map { BibTexConverter.toBibTex(it) }.joinToString("\n\n")
+            val refs = db.getAllReferences()
+            val converted = refs.map { BibTexConverter.toBibTex(it) }.joinToString("\n\n")
             res.header("Content-Type", "text/plain")
             converted
         })
@@ -76,9 +72,7 @@ class Server(val db: SqlDatabase){
         })
 
         before("/ref/:id", { req, _ ->
-            val ref = db.store {
-                select(Reference::class) where (Reference::id eq req.params("id"))
-            }.get().firstOrNull()
+            val ref = db.getReferenceById(req.params("id"))
 
             if (ref == null) {
                 halt(404)
@@ -88,10 +82,7 @@ class Server(val db: SqlDatabase){
         })
 
         get("/ref/:id/bibtex", { req, res ->
-            val ref = db.store {
-                select(Reference::class) where (Reference::id eq req.params("id"))
-            }.get().firstOrNull()
-
+            val ref = db.getReferenceById(req.params("id"))!!
             val converted = BibTexConverter.toBibTex(ref)
             res.header("Content-Type", "text/plain")
             converted
@@ -105,7 +96,7 @@ class Server(val db: SqlDatabase){
 
         delete("/ref/:id", { req, _ ->
             val ref = req.attribute<Reference>("reference")
-            db.store.delete(ref)
+            db.delete(ref)
             "Reference deleted"
         })
 
@@ -121,8 +112,8 @@ class Server(val db: SqlDatabase){
             reftag.ref = ref
             reftag.tag = tag
 
-            db.store.insert(tag)
-            db.store.insert(reftag)
+            db.insert(tag)
+            db.insert(reftag)
 
             res.redirect("/ref/$id")
         })

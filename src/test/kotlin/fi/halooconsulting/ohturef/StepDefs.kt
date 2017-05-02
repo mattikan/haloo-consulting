@@ -57,7 +57,7 @@ class StepDefs {
 
     @Then("^reference with title \"([^\"]*)\" exists")
     fun reference_exists(title: String) {
-        val ref = SqlDatabase.sqlite().store.select(Reference::class).where(Reference::title eq title).get().first()
+        val ref = SqlDatabase.sqlite().getReferenceByTitle(title)
         Assert.assertNotNull(ref)
     }
 
