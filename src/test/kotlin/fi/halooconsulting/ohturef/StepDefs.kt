@@ -9,10 +9,13 @@ import fi.halooconsulting.ohturef.web.Server
 import io.requery.kotlin.eq
 import io.requery.sql.TableCreationMode
 import org.junit.Assert
+import org.openqa.selenium.By
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.Select
+import org.openqa.selenium.support.ui.WebDriverWait
 import java.net.URL
+import java.util.concurrent.TimeUnit
 
 class StepDefs {
     val username = System.getenv("SAUCE_USERNAME")
@@ -33,6 +36,7 @@ class StepDefs {
 
     @Given("^main page is loaded$")
     fun main_page_loaded() {
+        driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS)
         driver.get(baseUrl)
     }
 
@@ -43,34 +47,49 @@ class StepDefs {
 
     @When("^reference type is set to (Book|Inproceedings|Article)$")
     fun reference_type_is_set_to(referenceType: String) {
-        val typeSelector = Select(driver.findElementByName("type"))
+        val typeSelector = Select(driver.findElement(By.id("type")))
         typeSelector.selectByVisibleText(referenceType)
     }
 
     @When("^field \"([^\"]*)\" is set to \"([^\"]*)\"$")
     fun field_is_set_to(field: String, value: String) {
-        val input = driver.findElementByName(field)
+        val input = driver.findElement(By.id(field))
+        input.clear()
         input.sendKeys(value)
     }
 
     @When("^create is clicked$")
     fun create_is_clicked() {
-        val id = driver.findElementByName("id")
-        latestRef = id.text
-
-        val createButton = driver.findElementById("submit")
+        val createButton = driver.findElement(By.id("submit"))
         createButton.submit()
+    }
+
+    @When("^id generation button is clicked$")
+    fun generate_id_is_clicked() {
+        val button = driver.findElement(By.id("generate-id"))
+        button.click()
+        WebDriverWait(driver, 1, 10).until { page ->
+            val element = page?.findElement(By.id("id"))?.getAttribute("value")
+            print(element)
+            !element.isNullOrBlank()
+        }
     }
 
     @Then("^reference with title \"([^\"]*)\" is visible")
     fun reference_is_visible(title: String) {
-        val element = driver.findElementByLinkText(title)
+        val element = driver.findElement(By.linkText(title))
         Assert.assertNotNull(element)
     }
 
     @Then("^reference with title \"([^\"]*)\" exists")
-    fun reference_exists(title: String) {
+    fun reference_exists_title(title: String) {
         val ref = SqlDatabase.sqlite().store.select(Reference::class).where(Reference::title eq title).get().first()
+        Assert.assertNotNull(ref)
+    }
+
+    @Then("^reference with id \"([^\"]*)\" exists")
+    fun reference_exists_id(id: String) {
+        val ref = SqlDatabase.sqlite().store.select(Reference::class).where(Reference::id eq id).get().first()
         Assert.assertNotNull(ref)
     }
 
