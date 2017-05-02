@@ -25,17 +25,5 @@ class RunCucumberTests {
             db.populateWithTestData()
         }
 
-        @BeforeClass @JvmStatic
-        fun setUpClass() {
-            server.start()
-            Spark.awaitInitialization()
-            TimeUnit.SECONDS.sleep(20)
-        }
-
-        @AfterClass @JvmStatic
-        fun teardown() {
-            server.stop()
-        }
-
     }
 }
