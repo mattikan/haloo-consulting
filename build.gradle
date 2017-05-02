@@ -14,7 +14,7 @@ mainClassName = "fi.halooconsulting.ohturef.EntryKt"
 
 project.ext {
     cucumberVersion = '1.2.5'
-    seleniumVersion = '3.4.X'
+    seleniumVersion = '3.4.0'
 }
 
 buildscript {
