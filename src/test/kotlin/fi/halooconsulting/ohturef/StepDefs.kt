@@ -1,5 +1,7 @@
 package fi.halooconsulting.ohturef
 
+import com.gargoylesoftware.htmlunit.BrowserVersion
+import com.gargoylesoftware.htmlunit.WebClient
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
@@ -10,6 +12,8 @@ import io.requery.kotlin.eq
 import io.requery.sql.TableCreationMode
 import org.junit.Assert
 import org.openqa.selenium.By
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.Select
@@ -22,24 +26,33 @@ class StepDefs {
     val username = System.getenv("SAUCE_USERNAME")
     val accessKey = System.getenv("SAUCE_ACCESS_KEY")
     val baseUrl = "http://localhost:${Server.getPort()}"
-    var driver: RemoteWebDriver
+    var driver: WebDriver
 
     var latestRef: String? = null
 
     init {
-        var caps = DesiredCapabilities.firefox()
-        caps.setCapability("platform", "Windows 10")
-        caps.setCapability("version", "52.0")
-        caps.setCapability("tunnel-identifier", System.getenv("TRAVIS_JOB_NUMBER"))
-        caps.setCapability("build", System.getenv("TRAVIS_BUILD_NUMBER"))
-        driver = RemoteWebDriver(URL("https://$username:$accessKey@ondemand.saucelabs.com:443/wd/hub"), caps)
+        if(username != null && accessKey != null) {
+            var caps = DesiredCapabilities.firefox()
+            caps.setCapability("platform", "Windows 10")
+            caps.setCapability("version", "52.0")
+            caps.setCapability("tunnel-identifier", System.getenv("TRAVIS_JOB_NUMBER"))
+            caps.setCapability("build", System.getenv("TRAVIS_BUILD_NUMBER"))
+            driver = RemoteWebDriver(URL("https://$username:$accessKey@ondemand.saucelabs.com:443/wd/hub"), caps)
+        } else {
+            driver = object : HtmlUnitDriver(true) {
+                override fun modifyWebClient(client: WebClient?): WebClient {
+                    val modClient = super.modifyWebClient(client)
+                    modClient.options.isThrowExceptionOnScriptError = false
+                    return modClient
+                }
+            }
+        }
+        driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS)
     }
 
     @Given("^main page is loaded$")
     fun main_page_loaded() {
-        driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS)
         driver.get(baseUrl)
-        TimeUnit.SECONDS.sleep(5)
     }
 
     @Given("^new reference page is loaded$")
@@ -70,7 +83,7 @@ class StepDefs {
     fun generate_id_is_clicked() {
         val button = driver.findElement(By.id("generate-id"))
         button.click()
-        WebDriverWait(driver, 1, 10).until { page ->
+        WebDriverWait(driver, 5, 200).until { page ->
             val element = page?.findElement(By.id("id"))?.getAttribute("value")
             print(element)
             !element.isNullOrBlank()
