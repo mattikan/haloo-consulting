@@ -9,5 +9,5 @@ env:
 addons:
   sauce_connect: true
 before_script:
-  - ./gradlew run
+  - ./gradlew run --rerun-tasks
   - sleep 10
