@@ -6,7 +6,9 @@ import fi.halooconsulting.ohturef.model.Tag
 
 open class NopDatabase : Database {
     override fun getAllReferences(): List<Reference> = emptyList()
+    override fun getAllTags(): List<Tag> = emptyList()
     override fun getGroupedReferences(): Map<String, List<Reference>> = emptyMap()
+    override fun getGroupedTags(): Map<String, List<Tag>> = emptyMap()
     override fun getReferenceById(id: String): Reference? = null
     override fun getReferenceByTitle(title: String): Reference? = null
     override fun getReferencesLike(likePattern: String): List<Reference> = emptyList()

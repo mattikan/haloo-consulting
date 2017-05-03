@@ -27,8 +27,9 @@ class Server(val db: SqlDatabase){
             refs["book"] = refs.getOrDefault("book", emptyList())
             refs["article"] = refs.getOrDefault("article", emptyList())
             refs["inproceedings"] = refs.getOrDefault("inproceedings", emptyList())
-
-            val vars = hashMapOf("references" to refs)
+            val reftags = db.getGroupedTags().mapValues { v -> v.value.map { t -> t.name }.joinToString(" ") }
+            val tags = db.getAllTags()
+            val vars = hashMapOf("references" to refs, "reftags" to reftags, "tags" to tags)
             ModelAndView(vars, "index.jade")
         }, templateEngine)
 

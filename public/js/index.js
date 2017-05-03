@@ -10,6 +10,16 @@ function getFilter(term) {
     }
 }
 
+function getTagFilter(term) {
+    return function() {
+        if ($(this).data("tags").indexOf(term) !== -1) {
+            $(this).removeClass("hidden");
+        } else {
+            $(this).addClass("hidden");
+        }
+    }
+}
+
 function collapseEmptyRegions() {
     var tables = $("section > table");
     tables.each(function() {
@@ -22,6 +32,13 @@ function collapseEmptyRegions() {
             $(this).parent().children(".no-search-results").addClass("hidden");
         }
     });
+}
+
+function filterByTag(tag) {
+    var rows = $(".ref-row");
+    var filter = getTagFilter(tag);
+    rows.each(filter);
+    collapseEmptyRegions();
 }
 
 $(document).ready(function() {

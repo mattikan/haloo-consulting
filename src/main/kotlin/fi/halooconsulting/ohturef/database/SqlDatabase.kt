@@ -59,13 +59,31 @@ class SqlDatabase(source: DataSource, creationMode: TableCreationMode = TableCre
         store.insert(entities = refs)
 
         val testTag = TagEntity()
-        testTag.name = "Testitagi 1"
+        testTag.name = "hyvä"
         store.insert(testTag)
 
         val testRefTag = ReferenceTagEntity()
         testRefTag.ref = refs.first()
         testRefTag.tag = testTag
         store.insert(testRefTag)
+
+        val testTag2 = TagEntity()
+        testTag2.name = "huono"
+        store.insert(testTag2)
+
+        val testRefTag2 = ReferenceTagEntity()
+        testRefTag2.ref = refs.last()
+        testRefTag2.tag = testTag2
+        store.insert(testRefTag2)
+
+        val testTag3 = TagEntity()
+        testTag3.name = "ok"
+        store.insert(testTag3)
+
+        val testRefTag3 = ReferenceTagEntity()
+        testRefTag3.ref = refs.first()
+        testRefTag3.tag = testTag3
+        store.insert(testRefTag3)
     }
 
     override fun getReferenceById(id: String): Reference? {
@@ -94,6 +112,10 @@ class SqlDatabase(source: DataSource, creationMode: TableCreationMode = TableCre
         return store { select(Reference::class) }.get().toList()
     }
 
+    override fun getAllTags(): List<Tag> {
+        return store { select(Tag::class) }.get().toList()
+    }
+
     override fun getReferenceByTitle(title: String): Reference {
         return store { select(Reference::class) where(Reference::title eq title) }.get().firstOrNull()
     }
@@ -102,6 +124,12 @@ class SqlDatabase(source: DataSource, creationMode: TableCreationMode = TableCre
         return store {
             select(Reference::class)
         }.get().groupBy { k -> k.type }.mapKeys { k -> k.key.name.toLowerCase() }
+    }
+
+    override fun getGroupedTags(): Map<String, List<Tag>> {
+        return store {
+            select(ReferenceTag::class)
+        }.get().groupBy { t -> t.ref.id }.mapValues { l -> l.value.map{ t -> t.tag } }
     }
 
     override fun getOrCreateTag(name: String): Tag {

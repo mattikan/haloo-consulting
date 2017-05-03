@@ -10,6 +10,15 @@ block content
 
     input#search(type="text" placeholder="Search")
 
+    h2 Filter by tags
+    section#tags
+        if empty(tags)
+            p No tags
+        else
+            each tag in tags
+                button.btn.inline-btn(onclick='filterByTag("#{tag.name}")') #{tag.name}
+
+
     h2 Book references
     section#book-references
         if empty(references["book"])
@@ -26,7 +35,7 @@ block content
                     th Pages
                     th
                 each line in references["book"]
-                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.year} #{line.publisher} #{line.address} #{line.pages}")
+                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.year} #{line.publisher} #{line.address} #{line.pages}" data-tags="#{reftags[line.id]}")
                         td= line.id
                         td= line.author
                         td: a(href="/ref/#{line.id}") #{line.title}
@@ -56,7 +65,7 @@ block content
                     th Address
                     th
                 each line in references["article"]
-                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.journal} #{line.volume} #{line.number} #{line.year} #{line.pages} #{line.publisher} #{line.address}")
+                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.journal} #{line.volume} #{line.number} #{line.year} #{line.pages} #{line.publisher} #{line.address}" data-tags="#{reftags[line.id]}")
                         td= line.id
                         td= line.author
                         td: a(href="/ref/#{line.id}") #{line.title}
@@ -87,7 +96,7 @@ block content
                     th Address
                     th
                 each line in references["inproceedings"]
-                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.booktitle} #{line.year} #{line.pages} #{line.publisher} #{line.address}")
+                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.booktitle} #{line.year} #{line.pages} #{line.publisher} #{line.address}" data-tags="#{reftags[line.id]}")
                         td= line.id
                         td= line.author
                         td: a(href="/ref/#{line.id}") #{line.title}
