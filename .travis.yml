@@ -11,3 +11,4 @@ addons:
 before_script:
   - nohup ./gradlew run --rerun-tasks < /dev/null > /dev/null 2> /dev/null &
   - sleep 15
+script: ./gradlew check --rerun-tasks
