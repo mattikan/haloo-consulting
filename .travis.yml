@@ -9,5 +9,5 @@ env:
 addons:
   sauce_connect: true
 before_script:
-  - nohup ./gradlew run < /dev/null > /dev/null 2> /dev/null &
+  - ./gradlew run
   - sleep 10
