@@ -149,8 +149,10 @@ class StepDefs {
 
     @Then("^reference with title \"([^\"]*)\" is not visible")
     fun reference_is_not_visible(title: String) {
-        val element = driver.findElement(By.linkText(title))
-        Assert.assertNull(element)
+        try {
+            val element = driver.findElement(By.linkText(title))
+            Assert.assertNull(element)
+        } catch (e: NoSuchElementException) {}
     }
 
     @Then("^reference with title \"([^\"]*)\" exists")
