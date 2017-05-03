@@ -1,9 +1,14 @@
 extends layout
 
+block scripts
+    script(src="/js/index.js")
+
 block content
     h1 Haloo Consulting - Ohturef
 
     a.btn.add-btn(href="/new") Add new reference
+
+    input#search(type="text" placeholder="Search")
 
     h2 Book references
     section#book-references
@@ -21,7 +26,7 @@ block content
                     th Pages
                     th
                 each line in references["book"]
-                    tr
+                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.year} #{line.publisher} #{line.address} #{line.pages}")
                         td= line.id
                         td= line.author
                         td: a(href="/ref/#{line.id}") #{line.title}
@@ -30,6 +35,7 @@ block content
                         td= line.address
                         td= line.pages
                         td: button.btn.inline-btn(onclick='deleteReference("#{line.id}")') Delete
+        p.no-search-results.hidden No references matching search criteria.
 
     h2 Article references
     section#article-references
@@ -50,7 +56,7 @@ block content
                     th Address
                     th
                 each line in references["article"]
-                    tr
+                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.journal} #{line.volume} #{line.number} #{line.year} #{line.pages} #{line.publisher} #{line.address}")
                         td= line.id
                         td= line.author
                         td: a(href="/ref/#{line.id}") #{line.title}
@@ -62,6 +68,7 @@ block content
                         td= line.publisher
                         td= line.address
                         td: button.btn.inline-btn(onclick='deleteReference("#{line.id}")') Delete
+        p.no-search-results.hidden No references matching search criteria.
 
     h2 Inproceedings references
     section#inproceedings-references
@@ -80,7 +87,7 @@ block content
                     th Address
                     th
                 each line in references["inproceedings"]
-                    tr
+                    tr.ref-row(data-search="#{line.id} #{line.author} #{line.title} #{line.booktitle} #{line.year} #{line.pages} #{line.publisher} #{line.address}")
                         td= line.id
                         td= line.author
                         td: a(href="/ref/#{line.id}") #{line.title}
@@ -90,6 +97,7 @@ block content
                         td= line.publisher
                         td= line.address
                         td: button.btn.inline-btn(onclick='deleteReference("#{line.id}")') Delete
+        p.no-search-results.hidden No references matching search criteria.
 
     h2 Export BibTeX
     section#bibtex-export
