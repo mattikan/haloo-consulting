@@ -4,6 +4,9 @@ import fi.halooconsulting.ohturef.conversion.BibTexConverter
 import fi.halooconsulting.ohturef.database.IdGenerator
 import fi.halooconsulting.ohturef.database.SqlDatabase
 import fi.halooconsulting.ohturef.model.*
+import fi.halooconsulting.ohturef.model.ReferenceEntity
+import fi.halooconsulting.ohturef.model.TagEntity
+import fi.halooconsulting.ohturef.model.ReferenceTagEntity
 import spark.ModelAndView
 import spark.Spark
 import spark.Spark.*
