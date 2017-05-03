@@ -88,5 +88,5 @@ jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
-task stage(dependsOn: ['build', 'clean'])
+task stage(dependsOn: ['assemble', 'clean'])
 build.mustRunAfter clean
