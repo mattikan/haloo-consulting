@@ -3,7 +3,47 @@ extends layout
 block content
     h1= reference.title
     a(href="/") ◀ Return to listing
-    p= reference
+
+    h3 Reference info
+    section#reference
+        table
+            tr
+                td Id
+                td= reference.id
+            tr
+                td Author
+                td= reference.author
+            if reference.booktitle
+                tr
+                    td Book title
+                    td= reference.booktitle
+            tr
+                td Year
+                td= reference.year
+            if reference.publisher
+                tr
+                    td Publisher
+                    td= reference.publisher
+            if reference.address
+                tr
+                    td Address
+                    td= reference.address
+            if reference.journal
+                tr
+                    td Journal
+                    td= reference.journal
+            if reference.volume
+                tr
+                    td Volume
+                    td= reference.volume
+            if reference.number
+                tr
+                    td Number
+                    td= reference.number
+            if reference.pages
+                tr
+                    td Pages
+                    td= reference.pages
 
     button.btn#export Export BibTex
 
