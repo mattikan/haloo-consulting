@@ -10,6 +10,7 @@ interface Database {
     fun getGroupedReferences(): Map<String, List<Reference>>
     fun getReferencesLike(likePattern: String): List<Reference>
     fun getReferenceByTitle(title: String): Reference?
+    fun getOrCreateTag(name: String): Tag?
 
     fun insert(ref: Reference)
     fun insert(ref: Tag)

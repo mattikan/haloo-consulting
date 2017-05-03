@@ -10,6 +10,7 @@ open class NopDatabase : Database {
     override fun getReferenceById(id: String): Reference? = null
     override fun getReferenceByTitle(title: String): Reference? = null
     override fun getReferencesLike(likePattern: String): List<Reference> = emptyList()
+    override fun getOrCreateTag(name: String): Tag? = null
 
     override fun insert(ref: Reference) { }
     override fun insert(ref: Tag) { }
