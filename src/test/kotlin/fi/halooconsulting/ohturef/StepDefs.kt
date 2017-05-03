@@ -83,11 +83,12 @@ class StepDefs {
     fun generate_id_is_clicked() {
         val button = driver.findElement(By.id("generate-id"))
         button.click()
-        WebDriverWait(driver, 5, 200).until { page ->
-            val element = page?.findElement(By.id("id"))?.getAttribute("value")
-            print(element)
-            !element.isNullOrBlank()
-        }
+        TimeUnit.SECONDS.sleep(3)
+//        WebDriverWait(driver, 5, 200).until { page ->
+//            val element = page?.findElement(By.id("id"))?.getAttribute("value")
+//            print(element)
+//            !element.isNullOrBlank()
+//        }
     }
 
     @Then("^reference with title \"([^\"]*)\" is visible")
