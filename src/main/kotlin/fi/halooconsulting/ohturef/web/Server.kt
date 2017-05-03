@@ -105,8 +105,7 @@ class Server(val db: SqlDatabase){
             val ref = req.attribute<Reference>("reference")
             val name = req.queryParams("name")
 
-            val tag = TagEntity()
-            tag.name = name
+            val tag = db.getOrCreateTag(name)
 
             val reftag = ReferenceTagEntity()
             reftag.ref = ref

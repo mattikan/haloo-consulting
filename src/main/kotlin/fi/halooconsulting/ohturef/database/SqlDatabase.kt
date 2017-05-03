@@ -3,6 +3,7 @@ package fi.halooconsulting.ohturef.database
 import fi.halooconsulting.ohturef.model.*
 import io.requery.kotlin.eq
 import io.requery.kotlin.like
+import io.requery.kotlin.select
 import io.requery.sql.KotlinConfiguration
 import io.requery.sql.KotlinEntityDataStore
 import io.requery.sql.SchemaModifier
@@ -101,6 +102,16 @@ class SqlDatabase(source: DataSource, creationMode: TableCreationMode = TableCre
         return store {
             select(Reference::class)
         }.get().groupBy { k -> k.type }.mapKeys { k -> k.key.name.toLowerCase() }
+    }
+
+    override fun getOrCreateTag(name: String): Tag {
+        var tag = store {select(Tag::class) where (Tag::name eq name)} .get().firstOrNull()
+        if (tag == null) {
+            tag = TagEntity()
+            tag.name = name
+            store.insert(tag)
+        }
+        return tag
     }
 
     init {
