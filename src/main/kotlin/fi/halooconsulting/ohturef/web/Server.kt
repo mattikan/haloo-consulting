@@ -27,7 +27,14 @@ class Server(val db: SqlDatabase){
             refs["book"] = refs.getOrDefault("book", emptyList())
             refs["article"] = refs.getOrDefault("article", emptyList())
             refs["inproceedings"] = refs.getOrDefault("inproceedings", emptyList())
-            val reftags = db.getGroupedTags().mapValues { v -> v.value.map { t -> t.name }.joinToString(" ") }
+
+            val groupedTags = db.getGroupedTags()
+            val reftags = refs
+                    .flatMap { it.value }
+                    .map { r -> Pair(r.id, groupedTags.getOrDefault(r.id, emptyList())) }
+                    .toMap()
+                    .mapValues { it.value.map { it.name }.joinToString(" ") }
+
             val tags = db.getAllTags()
             val vars = hashMapOf("references" to refs, "reftags" to reftags, "tags" to tags)
             ModelAndView(vars, "index.jade")
