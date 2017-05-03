@@ -1,10 +1,6 @@
 package fi.halooconsulting.ohturef.database
 
 import fi.halooconsulting.ohturef.model.*
-import fi.halooconsulting.ohturef.model.ReferenceEntity
-import fi.halooconsulting.ohturef.model.TagEntity
-import fi.halooconsulting.ohturef.model.ReferenceTagEntity
-import fi.halooconsulting.ohturef.model.Models
 import io.requery.kotlin.eq
 import io.requery.kotlin.like
 import io.requery.sql.KotlinConfiguration
