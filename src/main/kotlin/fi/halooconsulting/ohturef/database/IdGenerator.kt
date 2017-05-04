@@ -14,12 +14,13 @@ class IdGenerator(private val database: Database) {
     }
 
     fun getIdCandidates(req: IdGenerationRequest) : Sequence<String> {
+        val authors = req.authors.filter { it.isNotEmpty() }
         return buildSequence {
             val yearSuffix = req.year.toString().substring(2..3)
-            val authorPrefix = if (req.authors.count() == 1) {
-                req.authors.single().take(3)
+            val authorPrefix = if (authors.count() == 1) {
+                authors.single().take(3)
             } else {
-                req.authors.map(String::first).joinToString("")
+                authors.map(String::first).joinToString("")
             }
             val baseId = "$authorPrefix$yearSuffix"
             yield(baseId)
