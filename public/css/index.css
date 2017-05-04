@@ -70,6 +70,7 @@ label.optional {
 
 .add-btn, .submit-btn {
     margin-top: 1em;
+    margin-bottom: 2em;
 }
 
 .btn-lg {
@@ -89,6 +90,7 @@ input[type="text"], input[type="number"], textarea {
 
 input[type="text"], input[type="number"] {
     line-height: 2em;
+    padding: 4px;
 }
 
 textarea {
@@ -102,4 +104,33 @@ textarea {
 
 .hidden {
     display: none;
+}
+
+.filtered-out {
+    display: none;
+}
+
+#search {
+    display: block;
+    width: 20em;
+}
+
+.active.btn {
+    background-color: #215068;
+}
+
+.tag {
+    background-color: #1ea06d;
+    color: white;
+    padding: 0.25em;
+    border-radius: 2px;
+}
+
+#reference {
+    margin-bottom: 3em;
+}
+
+.tags-container {
+    display: block;
+    margin-bottom: 1em;
 }

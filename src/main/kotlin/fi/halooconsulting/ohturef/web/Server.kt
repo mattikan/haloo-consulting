@@ -28,7 +28,15 @@ class Server(val db: SqlDatabase){
             refs["article"] = refs.getOrDefault("article", emptyList())
             refs["inproceedings"] = refs.getOrDefault("inproceedings", emptyList())
 
-            val vars = hashMapOf("references" to refs)
+            val groupedTags = db.getGroupedTags()
+            val reftags = refs
+                    .flatMap { it.value }
+                    .map { r -> Pair(r.id, groupedTags.getOrDefault(r.id, emptyList())) }
+                    .toMap()
+                    .mapValues { it.value.map { it.name }.joinToString(" ") }
+
+            val tags = db.getAllTags()
+            val vars = hashMapOf("references" to refs, "reftags" to reftags, "tags" to tags)
             ModelAndView(vars, "index.jade")
         }, templateEngine)
 
@@ -90,7 +98,8 @@ class Server(val db: SqlDatabase){
 
         get("/ref/:id", { req, _ ->
             val ref = req.attribute<Reference>("reference")
-            val vars = hashMapOf("reference" to ref)
+            val tags = db.getGroupedTags()[ref.id]
+            val vars = hashMapOf("reference" to ref, "tags" to (tags ?: emptyList()))
             ModelAndView(vars, "reference.jade")
         }, templateEngine)
 
@@ -102,17 +111,13 @@ class Server(val db: SqlDatabase){
 
         post("/ref/:id/tag", { req, res ->
             val id = req.params("id")
-            val ref = req.attribute<Reference>("reference")
-            val name = req.queryParams("name")
+            val ref = db.getReferenceById(id)!!
+            val name = req.queryParams("tag")
+
 
             val tag = db.getOrCreateTag(name)
 
-            val reftag = ReferenceTagEntity()
-            reftag.ref = ref
-            reftag.tag = tag
-
-            db.insert(tag)
-            db.insert(reftag)
+            val reftag = db.getOrCreateReferenceTag(ref, tag)
 
             res.redirect("/ref/$id")
         })
@@ -125,7 +130,7 @@ class Server(val db: SqlDatabase){
         Spark.stop()
     }
 
-    companion object Server {
+    companion object {
         fun getPort(): Int {
             if (System.getenv("PORT") != null) {
                 return System.getenv("PORT").toInt()

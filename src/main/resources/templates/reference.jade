@@ -49,24 +49,14 @@ block content
 
     textarea.hidden.bibtex-container#bibtex(rows="8", cols="60", readonly)
 
-    h3 Reference tags
+    h3 Tags
     section#reference-tags
-        if empty(reference.tags)
-            p No reference tags
-        else
-            table
-                tr
-                    th Tags
-                each line in reference.tags
-                    tr
-                        td= line.tag
-
-
-    h3 Add tag
-    section#tag-addition
+        .tags-container
+            each tag in tags
+                span.tag= tag.name
         form(action="/ref/#{reference.id}/tag", method="POST")
-            input#tag(name="tag" type="text" placeholder="Type your tag here" size="60")
-            input.btn.inline-btn(type="submit", value="Add")
+            input#tag(name="tag" type="text" placeholder="Type your tag here" size="60" required)
+            input.btn.inline-btn.btn-lg(id="submit" type="submit" value="Add")
 
     script.
         $(document).ready(() => {
