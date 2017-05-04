@@ -110,17 +110,13 @@ class Server(val db: SqlDatabase){
 
         post("/ref/:id/tag", { req, res ->
             val id = req.params("id")
-            val ref = db.getReferenceById(id)
+            val ref = db.getReferenceById(id)!!
             val name = req.queryParams("tag")
 
 
             val tag = db.getOrCreateTag(name)
 
-            val reftag = ReferenceTagEntity()
-            reftag.ref = ref
-            reftag.tag = tag
-
-            db.insert(reftag)
+            val reftag = db.getOrCreateReferenceTag(ref, tag)
 
             res.redirect("/ref/$id")
         })

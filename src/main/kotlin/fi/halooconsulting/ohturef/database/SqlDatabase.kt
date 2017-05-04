@@ -142,6 +142,17 @@ class SqlDatabase(source: DataSource, creationMode: TableCreationMode = TableCre
         return tag
     }
 
+    override fun getOrCreateReferenceTag(ref: Reference, tag: Tag): ReferenceTag {
+        var reftag = store {select(ReferenceTag::class) where ((ReferenceTag::ref eq ref) and (ReferenceTag::tag eq tag))} .get().firstOrNull()
+        if (reftag == null) {
+            reftag = ReferenceTagEntity()
+            reftag.ref = ref
+            reftag.tag = tag
+            store.insert(reftag)
+        }
+        return reftag
+    }
+
     init {
         SchemaModifier(source, Models.DEFAULT).createTables(creationMode)
         val conf = KotlinConfiguration(model = Models.DEFAULT, dataSource = source)
