@@ -52,11 +52,8 @@ block content
     h3 Tags
     section#reference-tags
         .tags-container
-            if empty(reference.tags)
-                p No assigned tags.
-            else
-                each tag in tags
-                    span.tag= tag.name
+            each tag in tags
+                span.tag= tag.name
         form(action="/ref/#{reference.id}/tag", method="POST")
             input#tag(name="tag" type="text" placeholder="Type your tag here" size="60" required)
             input.btn.inline-btn.btn-lg(id="submit" type="submit" value="Add")
