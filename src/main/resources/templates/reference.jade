@@ -55,8 +55,8 @@ block content
             if empty(reference.tags)
                 p No assigned tags.
             else
-                each tag in reference.tags
-                    span.tag= tag.tag.name
+                each tag in tags
+                    span.tag= tag.name
         form(action="/ref/#{reference.id}/tag", method="POST")
             input#tag(name="tag" type="text" placeholder="Type your tag here" size="60" required)
             input.btn.inline-btn.btn-lg(id="submit" type="submit" value="Add")

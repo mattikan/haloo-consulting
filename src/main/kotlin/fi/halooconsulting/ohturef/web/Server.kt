@@ -98,7 +98,8 @@ class Server(val db: SqlDatabase){
 
         get("/ref/:id", { req, _ ->
             val ref = req.attribute<Reference>("reference")
-            val vars = hashMapOf("reference" to ref)
+            val tags = db.getGroupedTags()[ref.id]
+            val vars = hashMapOf("reference" to ref, "tags" to tags)
             ModelAndView(vars, "reference.jade")
         }, templateEngine)
 
