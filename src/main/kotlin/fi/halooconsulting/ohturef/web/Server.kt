@@ -120,7 +120,6 @@ class Server(val db: SqlDatabase){
             reftag.ref = ref
             reftag.tag = tag
 
-            db.insert(tag)
             db.insert(reftag)
 
             res.redirect("/ref/$id")
