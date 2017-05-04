@@ -118,3 +118,19 @@ textarea {
 .active.btn {
     background-color: #215068;
 }
+
+.tag {
+    background-color: #1ea06d;
+    color: white;
+    padding: 0.25em;
+    border-radius: 2px;
+}
+
+#reference {
+    margin-bottom: 3em;
+}
+
+.tags-container {
+    display: block;
+    margin-bottom: 1em;
+}
