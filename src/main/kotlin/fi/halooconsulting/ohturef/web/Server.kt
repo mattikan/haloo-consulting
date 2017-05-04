@@ -110,8 +110,9 @@ class Server(val db: SqlDatabase){
 
         post("/ref/:id/tag", { req, res ->
             val id = req.params("id")
-            val ref = req.attribute<Reference>("reference")
-            val name = req.queryParams("name")
+            val ref = db.getReferenceById(id)
+            val name = req.queryParams("tag")
+
 
             val tag = db.getOrCreateTag(name)
 
