@@ -133,7 +133,7 @@ class Server(val db: SqlDatabase){
         Spark.stop()
     }
 
-    companion object Server {
+    companion object {
         fun getPort(): Int {
             if (System.getenv("PORT") != null) {
                 return System.getenv("PORT").toInt()

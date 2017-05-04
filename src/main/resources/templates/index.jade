@@ -15,9 +15,9 @@ block content
         if empty(tags)
             p No tags
         else
+            button.btn.inline-btn.tag(data-tag='') All tags
             each tag in tags
-                button.btn.inline-btn(onclick='filterByTag("#{tag.name}")') #{tag.name}
-
+                button.btn.inline-btn.tag(data-tag="#{tag.name}") #{tag.name}
 
     h2 Book references
     section#book-references

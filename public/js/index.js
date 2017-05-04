@@ -2,21 +2,13 @@
 
 function getFilter(term) {
     return function() {
-        if ($(this).data("search").toLowerCase().indexOf(term) !== -1) {
-            $(this).removeClass("hidden");
-        } else {
-            $(this).addClass("hidden");
-        }
+        return $(this).data("search").toLowerCase().indexOf(term) !== -1;
     }
 }
 
 function getTagFilter(term) {
     return function() {
-        if ($(this).data("tags").indexOf(term) !== -1) {
-            $(this).removeClass("hidden");
-        } else {
-            $(this).addClass("hidden");
-        }
+        return $(this).data("tags").indexOf(term) !== -1;
     }
 }
 
@@ -34,20 +26,53 @@ function collapseEmptyRegions() {
     });
 }
 
-function filterByTag(tag) {
-    var rows = $(".ref-row");
-    var filter = getTagFilter(tag);
-    rows.each(filter);
-    collapseEmptyRegions();
-}
-
 $(document).ready(function() {
     var rows = $(".ref-row");
-    $("#search").bind("mouseenter mouseleave keyup keydown", function() {
-        var value = $(this).val();
-        var filter = getFilter(value.trim().toLowerCase());
-        rows.each(filter);
+
+    var always = function () { return true; };
+    var textFilter = always;
+    var tagFilter = always;
+
+    function composeFilter() {
+        return function () {
+            if (textFilter.bind(this)() && tagFilter.bind(this)()) {
+                $(this).removeClass("hidden");
+            } else {
+                $(this).addClass("hidden");
+            }
+        }
+    }
+
+    function applyFilter() {
+        rows.each(composeFilter());
         collapseEmptyRegions();
+    }
+
+    $("#search").bind("change keyup keydown", function() {
+        var value = $(this).val().trim().toLowerCase();
+
+        if (!value || value === "") {
+            textFilter = always;
+        } else {
+            textFilter = getFilter(value);
+        }
+
+        applyFilter();
+    });
+
+    $(".tag.btn").click(function() {
+        var tagValue = $(this).data("tag");
+
+        $(".tag.btn.active").removeClass("active");
+        $(this).addClass("active");
+
+        if (!tagValue || tagValue === "") {
+            tagFilter = always;
+        } else {
+            tagFilter = getTagFilter(tagValue);
+        }
+
+        applyFilter();
     });
 
     // Trigger initial update to resync after e.g autofill
